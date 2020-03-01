@@ -1,0 +1,73 @@
+#!/usr/bin/env node
+
+const fs = require('fs').promises;
+
+const program = require('commander');
+const ncu = require('npm-check-updates');
+const semver = require('semver');
+
+const { getChangelog } = require('../lib/changelogFinder');
+const { buildReport } = require('../lib/reporters/console');
+
+program
+    .version('0.0.1', '-v, --version')
+    .option('-c, --check', 'check package.json upgrades using npm check upgrades')
+    .option('-p, --package <package>', 'get changelog for a npm package');
+
+program.parse(process.argv);
+
+/**
+ * Transform semver range to semver version
+ * @param {String} semverRange semver range (ex: ^1.3.2)
+ * @returns {String} semver version (ex: 1.3.2)
+ */
+function rangeToVersion(semverRange) {
+    return semverRange.replace('^', '').replace('~', '');
+}
+
+(async () => {
+    const { package: packageName, check } = program;
+    if (packageName && !check) {
+        const changelog = await getChangelog(packageName);
+        console.log(changelog);
+    }
+
+    if (check && !packageName) {
+        // get dependencies to upgrade
+        const packagesToUpgrade = await ncu.run();
+
+        // get current versions
+        const packageFile = await fs.readFile(`${process.cwd()}/package.json`);
+        let packageData;
+        try {
+            packageData = JSON.parse(packageFile);
+        } catch (err) {
+            console.log(`Invalid package.json file in ${process.cwd()}`);
+            process.exit();
+        }
+        const dependencies = packageData.dependencies || {};
+        const devDependencies = packageData.devDependencies || {};
+        const allDependencies = { ...dependencies, ...devDependencies };
+
+        // find changelogs
+        const changelogResolvers = Object.keys(packagesToUpgrade).map((currentPackageName) => {
+            const currentVersion = allDependencies[currentPackageName];
+            const newVersion = packagesToUpgrade[currentPackageName];
+            const dependencyType = dependencies[currentPackageName] ? 'dependencies' : 'devDependencies';
+            return new Promise((resolve) => {
+                getChangelog(currentPackageName).then((changelog) => {
+                    const data = { name: currentPackageName, changelog, dependencyType };
+                    if (currentVersion) data.from = rangeToVersion(currentVersion);
+                    if (newVersion) data.to = rangeToVersion(newVersion);
+
+                    data.upgradeType = semver.diff(data.from, data.to);
+                    return resolve(data);
+                });
+            });
+        });
+        const data = await Promise.all(changelogResolvers);
+
+        // format output
+        buildReport(data);
+    }
+})();

@@ -1,0 +1,42 @@
+{
+    "name": "get-changelog",
+    "version": "0.0.1",
+    "description": "CLI tool to easily get changelogs",
+    "main": "lib/changelogFinder.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Clement134/get-changelog.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Clement134/get-changelog/issues"
+    },
+    "homepage": "https://github.com/Clement134/get-changelog#readme",
+    "scripts": {
+        "start": "node getChangelog.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "cli",
+        "changelog",
+        "npm"
+    ],
+    "bin": {
+        "get-changelog": "./bin/get-changelog"
+    },
+    "author": "CS",
+    "license": "MIT",
+    "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-config-prettier": "^6.9.0",
+        "eslint-plugin-import": "^2.20.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "prettier": "^1.19.1"
+    },
+    "dependencies": {
+        "commander": "^4.1.1",
+        "got": "^10.6.0",
+        "npm-check-updates": "^4.0.1",
+        "semver": "^7.1.3"
+    }
+}
