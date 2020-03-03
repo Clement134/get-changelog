@@ -37,6 +37,7 @@
         "commander": "^4.1.1",
         "got": "^10.6.0",
         "npm-check-updates": "^4.0.1",
+        "registry-url": "^5.1.0",
         "semver": "^7.1.3"
     }
 }
