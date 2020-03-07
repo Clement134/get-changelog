@@ -26,9 +26,19 @@ function rangeToVersion(semverRange) {
 }
 
 (async () => {
+    let configuration = {};
+    try {
+        const configFile = await fs.readFile('./config.json');
+        configuration = JSON.parse(configFile);
+    } catch (err) {
+        if (err.code !== 'ENOENT') {
+            console.error('Invalid configuration file');
+        }
+    }
+
     const { package: packageName, check } = program;
     if (packageName && !check) {
-        const changelog = await getChangelog(packageName);
+        const changelog = await getChangelog(packageName, configuration);
         console.log(changelog);
     }
 
@@ -55,7 +65,7 @@ function rangeToVersion(semverRange) {
             const newVersion = rangeToVersion(packagesToUpgrade[currentPackageName]);
             const dependencyType = dependencies[currentPackageName] ? 'dependencies' : 'devDependencies';
             return new Promise((resolve) => {
-                getChangelog(currentPackageName, currentVersion).then((changelog) => {
+                getChangelog(currentPackageName, configuration, currentVersion).then((changelog) => {
                     const data = { name: currentPackageName, changelog, dependencyType };
                     if (currentVersion) data.from = currentVersion;
                     if (newVersion) data.to = newVersion;
