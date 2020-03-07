@@ -2,6 +2,7 @@
 
 const fs = require('fs').promises;
 
+const ora = require('ora');
 const program = require('commander');
 const ncu = require('npm-check-updates');
 const semver = require('semver');
@@ -37,8 +38,10 @@ function rangeToVersion(semverRange) {
     }
 
     const { package: packageName, check } = program;
+    const spinner = ora({ spinner: 'simpleDots' }).start('searching changelogs');
     if (packageName && !check) {
         const changelog = await getChangelog(packageName, configuration);
+        spinner.stop();
         console.log(changelog);
     }
 
@@ -71,12 +74,14 @@ function rangeToVersion(semverRange) {
                     if (newVersion) data.to = newVersion;
 
                     data.upgradeType = semver.diff(data.from, data.to);
+                    spinner.text = `searching changelog for ${currentPackageName}`;
                     return resolve(data);
                 });
             });
         });
         const data = await Promise.all(changelogResolvers);
 
+        spinner.stop();
         // format output
         buildReport(data);
     }
