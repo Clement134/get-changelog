@@ -11,7 +11,7 @@ const { getChangelog } = require('../lib/changelogFinder');
 const { buildReport } = require('../lib/reporters/console');
 
 program
-    .version('0.0.1', '-v, --version')
+    .version('0.1.0', '-v, --version')
     .option('-c, --check', 'check package.json upgrades using npm check upgrades')
     .option('-p, --package <package>', 'get changelog for a npm package');
 

@@ -2,7 +2,7 @@
 
 > A CLI tool to easily find changelogs
 
-The search for changelogs before upgrade is often a time consuming task. The purpose of this tool is to simplify this search using common changelog locations.
+Searching for changelogs before upgrade is often a time consuming task. The purpose of this tool is to simplify this search using common changelog locations.
 
 ## How it works
 

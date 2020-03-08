@@ -1,6 +1,6 @@
 {
     "name": "get-changelog",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "CLI tool to easily get changelogs",
     "main": "lib/changelogFinder.js",
     "repository": {
@@ -18,7 +18,8 @@
     "keywords": [
         "cli",
         "changelog",
-        "npm"
+        "npm",
+        "versioning"
     ],
     "bin": {
         "get-changelog": "./bin/get-changelog"
