@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+### Fixes
+
+* Upgrade dependencies to fix security issues
+
 ## 0.1.0
 
 ### Features
