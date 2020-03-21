@@ -13,8 +13,10 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "class-methods-use-this": "off",
         "no-await-in-loop": "off",
         "no-console": "off",
-        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "no-underscore-dangle": "off"
     }
 }

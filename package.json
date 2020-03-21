@@ -2,7 +2,7 @@
     "name": "get-changelog",
     "version": "0.1.1",
     "description": "CLI tool to easily get changelogs",
-    "main": "lib/changelogFinder.js",
+    "main": "lib/ChangelogFinder.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Clement134/get-changelog.git"
