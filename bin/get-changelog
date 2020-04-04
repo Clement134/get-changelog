@@ -1,92 +1,17 @@
 #!/usr/bin/env node
 
-const fs = require('fs').promises;
-
-const ora = require('ora');
 const program = require('commander');
-const ncu = require('npm-check-updates');
-const semver = require('semver');
 
-const ChangelogFinder = require('../lib/ChangelogFinder');
-const { buildReport } = require('../lib/reporters/console');
-
-const spinnerConfig = { spinner: 'simpleDots' };
+const Runner = require('../lib/Runner');
 
 program
-    .version('0.1.0', '-v, --version')
+    .version('1.0.0', '-v, --version')
     .option('-c, --check', 'check package.json upgrades using npm check upgrades')
     .option('-m, --module <moduleName>', 'get changelog for an npm module');
 
 program.parse(process.argv);
 
-/**
- * Transform semver range to semver version
- * @param {String} semverRange semver range (ex: ^1.3.2)
- * @returns {String} semver version (ex: 1.3.2)
- */
-function rangeToVersion(semverRange) {
-    return semverRange.replace('^', '').replace('~', '');
-}
-
 (async () => {
-    let configuration = {};
-    try {
-        const configFile = await fs.readFile('./config.json');
-        configuration = JSON.parse(configFile);
-    } catch (err) {
-        if (err.code !== 'ENOENT') {
-            console.error('Invalid configuration file');
-        }
-    }
-
-    const changelogFinder = new ChangelogFinder(configuration);
-    const { module: moduleName, check } = program;
-    if (moduleName && !check) {
-        const spinner = ora(spinnerConfig).start('searching changelog');
-        const changelog = await changelogFinder.getChangelog(moduleName);
-        spinner.stop();
-        console.log(changelog);
-    }
-
-    if (check && !moduleName) {
-        // get dependencies to upgrade
-        const modulesToUpgrade = await ncu.run();
-
-        // get current versions
-        const packageFile = await fs.readFile(`${process.cwd()}/package.json`);
-        let packageData;
-        try {
-            packageData = JSON.parse(packageFile);
-        } catch (err) {
-            console.log(`Invalid package.json file in ${process.cwd()}`);
-            process.exit();
-        }
-        const dependencies = packageData.dependencies || {};
-        const devDependencies = packageData.devDependencies || {};
-        const allDependencies = { ...dependencies, ...devDependencies };
-
-        // find changelogs
-        const spinner = ora(spinnerConfig).start('searching changelogs');
-        const changelogResolvers = Object.keys(modulesToUpgrade).map((dependencyName) => {
-            const currentVersion = rangeToVersion(allDependencies[dependencyName]);
-            const newVersion = rangeToVersion(modulesToUpgrade[dependencyName]);
-            const dependencyType = dependencies[dependencyName] ? 'dependencies' : 'devDependencies';
-            return new Promise((resolve) => {
-                changelogFinder.getChangelog(dependencyName, currentVersion).then((changelog) => {
-                    const data = { name: dependencyName, changelog, dependencyType };
-                    if (currentVersion) data.from = currentVersion;
-                    if (newVersion) data.to = newVersion;
-
-                    data.upgradeType = semver.diff(data.from, data.to);
-                    spinner.text = `searching changelog for ${dependencyName}`;
-                    return resolve(data);
-                });
-            });
-        });
-        const data = await Promise.all(changelogResolvers);
-
-        spinner.stop();
-        // format output
-        buildReport(data);
-    }
+    const runner = new Runner(program);
+    await runner.run();
 })();
