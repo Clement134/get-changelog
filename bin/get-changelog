@@ -7,7 +7,8 @@ const Runner = require('../lib/Runner');
 program
     .version('1.0.0', '-v, --version')
     .option('-c, --check', 'check package.json upgrades using npm check upgrades')
-    .option('-m, --module <moduleName>', 'get changelog for an npm module');
+    .option('-m, --module <moduleName>', 'get changelog for an npm module')
+    .option('--cache', 'use cache to improve performances');
 
 program.parse(process.argv);
 

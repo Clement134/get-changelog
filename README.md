@@ -23,6 +23,7 @@ Options:
   -v, --version              output the version number
   -c, --check                check package.json upgrades using npm check upgrades
   -m, --module <moduleName>  get changelog for an npm module
+  --cache                    use cache to improve performances
   -h, --help                 display help for command
 ```
 
