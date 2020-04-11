@@ -2,7 +2,8 @@
     "env": {
         "browser": true,
         "commonjs": true,
-        "es6": true
+        "es6": true,
+        "jest": true
     },
     "extends": ["airbnb-base", "plugin:prettier/recommended"],
     "globals": {
@@ -13,8 +14,10 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "class-methods-use-this": "off",
         "no-await-in-loop": "off",
         "no-console": "off",
-        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "no-underscore-dangle": "off"
     }
 }

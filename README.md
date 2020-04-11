@@ -1,4 +1,4 @@
-# get-changelog
+# get-changelog ![version](https://img.shields.io/npm/v/get-changelog?style=flat-square) ![license](https://img.shields.io/npm/l/get-changelog?style=flat-square) ![codecov](https://img.shields.io/codecov/c/github/Clement134/get-changelog?style=flat-square&token=9901e2953c0a42f9937bd0045cdc649b)
 
 > A CLI tool to easily find changelogs
 
@@ -20,17 +20,18 @@ Searching for changelogs before upgrade is often a time consuming task. The purp
 Usage: get-changelog [options]
 
 Options:
-  -v, --version            output the version number
-  -c, --check              check package.json upgrades using npm check upgrades
-  -p, --package <package>  get changelog for a npm package
-  -h, --help               output usage information
+  -v, --version              output the version number
+  -c, --check                check package.json upgrades using npm check upgrades
+  -m, --module <moduleName>  get changelog for an npm module
+  --cache                    use cache to improve performances
+  -h, --help                 display help for command
 ```
 
 ### Examples
 
-#### -p, --package
+#### -m, --module
 
-![Package example](/images/package-example.png)
+![Module example](/images/module-example.png)
 
 #### -c, --check
 
@@ -39,10 +40,12 @@ Options:
 ## API usage
 
 ```javascript
-const { getChangelog } = require('get-changelog');
+const ChangelogFinder = require('get-changelog');
 
 (async () => {
-    const changelog = await getChangelog('express');
+    const changeLogFinder = new ChangelogFinder();
+    const changelogUrl = await changeLogFinder.getChangelog('express');
+    console.log(changelogUrl); // https://github.com/expressjs/express/blob/master/History.md
 })();
 ```
 
