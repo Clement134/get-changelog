@@ -1,4 +1,4 @@
-# get-changelog
+# get-changelog ![version](https://img.shields.io/npm/v/get-changelog?style=flat-square) ![license](https://img.shields.io/npm/l/get-changelog?style=flat-square) ![codecov](https://img.shields.io/codecov/c/github/Clement134/get-changelog?style=flat-square&token=9901e2953c0a42f9937bd0045cdc649b)
 
 > A CLI tool to easily find changelogs
 
