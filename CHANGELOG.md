@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.0
+
+### Features
+
+-   Use clickable links (#2)
+-   Add `-o` option to automatically open changelog in browser (#2)
+
+### Chore
+
+-   Fix typo in readme and CLI helps (#2)
+-   Upgrade dependencies and devDependencies
+
 ## 1.0.0
 
 ### Breaking change
