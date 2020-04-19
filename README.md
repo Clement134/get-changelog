@@ -21,7 +21,7 @@ Usage: get-changelog [options]
 
 Options:
   -v, --version              output the version number
-  -c, --check                check package.json upgrades using npm check upgrades
+  -c, --check                check package.json upgrades using npm-check-updates
   -m, --module <moduleName>  get changelog for an npm module
   -o, --open                 open changelog url with the default browser (only usable with -m)
   --cache                    use cache to improve performances
