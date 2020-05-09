@@ -1,0 +1,23 @@
+{
+    "name": "get-changelog-lib",
+    "version": "1.0.1",
+    "description": "Library to easily get changelogs",
+    "main": "src/ChangelogFinder.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Clement134/get-changelog.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Clement134/get-changelog/issues"
+    },
+    "homepage": "https://github.com/Clement134/get-changelog/tree/master/packages/get-changelog-lib#readme",
+    "keywords": [
+        "changelog"
+    ],
+    "author": "Clement134",
+    "license": "MIT",
+    "dependencies": {
+        "got": "^11.1.2",
+        "registry-url": "^5.1.0"
+    }
+}

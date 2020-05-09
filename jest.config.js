@@ -1,6 +1,6 @@
 module.exports = {
     clearMocks: true,
     collectCoverage: true,
-    collectCoverageFrom: ['./lib/**/*.js'],
+    collectCoverageFrom: ['./packages/**/src/**/*.js'],
     testEnvironment: 'node',
 };

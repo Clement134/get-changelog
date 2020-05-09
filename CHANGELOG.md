@@ -1,5 +1,13 @@
 # Changelog
 
+This changelog is kept only for historical reasons.
+There is one changelog for each package:
+
+-   get-changelog-cli: [CHANGELOG](/packages/get-changelog-cli/CHANGELOG.md)
+-   get-changelog-lib: [CHANGELOG](/packages/get-changelog-lib/CHANGELOG.md)
+
+---
+
 ## 1.1.0
 
 ### Features

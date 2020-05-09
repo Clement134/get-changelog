@@ -2,7 +2,7 @@
 
 const program = require('commander');
 
-const Runner = require('../lib/Runner');
+const Runner = require('../src/Runner');
 
 program
     .version('1.0.0', '-v, --version')

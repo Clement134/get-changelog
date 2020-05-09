@@ -1,15 +1,16 @@
 const ora = require('ora');
 const ncu = require('npm-check-updates');
 const open = require('open');
+const ChangelogFinder = require('get-changelog-lib');
+
 const Runner = require('./Runner');
-const ChangelogFinder = require('./ChangelogFinder');
 const Cache = require('./Cache');
 const { buildReport } = require('./reporters/console');
 
 jest.mock('ora');
 jest.mock('npm-check-updates');
 jest.mock('open');
-jest.mock('./ChangelogFinder');
+jest.mock('get-changelog-lib');
 jest.mock('./Cache');
 jest.mock('./reporters/console');
 
