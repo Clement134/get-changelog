@@ -3,8 +3,8 @@ const ora = require('ora');
 const ncu = require('npm-check-updates');
 const semver = require('semver');
 const openUrl = require('open');
+const ChangelogFinder = require('get-changelog-lib');
 
-const ChangelogFinder = require('./ChangelogFinder');
 const Cache = require('./Cache');
 const { buildReport } = require('./reporters/console');
 
