@@ -5,7 +5,7 @@
 ## How it works
 
 1. find git repository using npm registry
-2. find changelog in the repository (changelog, history or github versions)
+2. find changelog in the repository (changelog, history or changes files and github versions)
 3. return changelog url
 
 ## Install
