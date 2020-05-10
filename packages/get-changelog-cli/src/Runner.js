@@ -6,7 +6,7 @@ const openUrl = require('open');
 const ChangelogFinder = require('get-changelog-lib');
 
 const Cache = require('./Cache');
-const { buildReport } = require('./reporters/console');
+const reporters = require('./reporters');
 
 const spinnerConfig = { spinner: 'simpleDots' };
 
@@ -26,6 +26,7 @@ class Runner {
      */
     constructor(options) {
         this.options = options || {};
+        this.options.reporter = options.reporter || 'console';
     }
 
     /**
@@ -113,7 +114,8 @@ class Runner {
 
             spinner.stop();
             // format output
-            buildReport(data);
+            const reporter = reporters[this.options.reporter] || reporters.console;
+            reporter.buildReport(data);
         }
 
         if (configuration.cache) cache.write();
