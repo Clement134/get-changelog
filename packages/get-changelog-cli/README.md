@@ -20,12 +20,13 @@ Searching for changelogs before upgrade is often a time consuming task. The purp
 Usage: get-changelog [options]
 
 Options:
-  -v, --version              output the version number
-  -c, --check                check package.json upgrades using npm-check-updates
-  -m, --module <moduleName>  get changelog for an npm module
-  -o, --open                 open changelog url with the default browser (only usable with -m)
-  --cache                    use cache to improve performances
-  -h, --help                 display help for command
+  -v, --version                  output the version number
+  -c, --check                    check package.json upgrades using npm-check-updates
+  -m, --module <moduleName>      get changelog for an npm module
+  -r, --reporter <reporterName>  reporter to use (console, console-jira)
+  -o, --open                     open changelog url with the default browser (only usable with -m)
+  --cache                        use cache to improve performances
+  -h, --help                     display help for command
 ```
 
 ### Examples
@@ -37,6 +38,18 @@ Options:
 #### -c, --check
 
 ![Check example](/images/check-example.png)
+
+### Advanced usage
+
+#### Reporters
+
+It's possible to choose the reporter used with the `-r` option.
+The following reporters are implemented:
+
+| Name           | Description                                           |
+| -------------- | ----------------------------------------------------- |
+| `console`      | (default reporter) print packages data in the console |
+| `console-jira` | print packages data in jira markup                    |
 
 ## API usage
 
