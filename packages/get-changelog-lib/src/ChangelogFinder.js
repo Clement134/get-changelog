@@ -91,11 +91,11 @@ class ChangelogFinder {
 
         // try all possible location for changelog (with priority)
         const possibleLocations = (function() {
-            const names = ['CHANGELOG', 'changelog', 'ChangeLog', 'History', 'HISTORY', 'CHANGES'];
             const extensions = ['md', 'txt'];
+            const names = ['CHANGELOG', 'changelog', 'ChangeLog', 'History', 'HISTORY', 'CHANGES'];
             const combinations = [];
-            names.forEach(name => {
-                extensions.forEach(extension => {
+            extensions.forEach(extension => {
+                names.forEach(name => {
                     combinations.push(`${name}.${extension}`);
                 });
             });
