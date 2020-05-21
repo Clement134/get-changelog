@@ -90,7 +90,17 @@ class ChangelogFinder {
         }
 
         // try all possible location for changelog (with priority)
-        const possibleLocations = ['CHANGELOG.md', 'changelog.md', 'History.md', 'HISTORY.md', 'CHANGES.md'];
+        const possibleLocations = (function() {
+            const extensions = ['md', 'txt'];
+            const names = ['CHANGELOG', 'changelog', 'ChangeLog', 'History', 'HISTORY', 'CHANGES'];
+            const combinations = [];
+            extensions.forEach(extension => {
+                names.forEach(name => {
+                    combinations.push(`${name}.${extension}`);
+                });
+            });
+            return combinations;
+        })();
         const defaultChangelog = `${repositoryUrl}/releases`;
         let changelog;
         for (let i = 0; i < possibleLocations.length; i++) {

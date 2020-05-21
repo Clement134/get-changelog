@@ -56,6 +56,7 @@ test('returns History.md url', async () => {
     got.mockImplementation((url) => {
         if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/changelog.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/History.md') return 'CHANGELOG DATA';
 
         return {
@@ -83,9 +84,16 @@ test('returns github releases', async () => {
     got.mockImplementation((url) => {
         if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/changelog.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/History.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/HISTORY.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/CHANGES.md') throw new ErrorHttp(500);
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/changelog.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/History.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/HISTORY.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGES.txt') throw new ErrorHttp(500);
 
         return {
             json: jest.fn().mockResolvedValue({
