@@ -54,7 +54,6 @@ test('returns CHANGELOG.md url', async () => {
 test('supports default branch', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.mockImplementation((url) => {
-        console.log(url);
         if (url === 'https://api.github.com/repos/User/module-name') return {
             json: jest.fn().mockResolvedValue({
                 default_branch: "develop"
