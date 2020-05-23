@@ -1,5 +1,6 @@
 const got = require('got');
 const registryUrl = require('registry-url');
+const process = require('process');
 
 class ChangelogFinder {
     /**
@@ -64,7 +65,15 @@ class ChangelogFinder {
             try {
                 if (repositoryUrl.includes('github.com')) {
                     const repoApiPath = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, 'https://api.github.com/repos/');
-                    const apiResult = await got(repoApiPath).json();
+                    const oauthToken = process.env['CHANGELOGFINDER_GITHUB_AUTH_TOKEN'];
+                    const requestOptions = (typeof oauthToken === 'string')
+                        ? {
+                            'headers': {
+                                'Authorization': `token ${oauthToken}`
+                            }
+                        }
+                        : {};
+                        const apiResult = await got(repoApiPath, requestOptions).json();
                     return apiResult.default_branch;
                 }
             } catch (e) {
