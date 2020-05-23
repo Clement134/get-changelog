@@ -63,7 +63,7 @@ class ChangelogFinder {
         const defaultBranch = await (async () =>{
             try {
                 if (repositoryUrl.includes('github.com')) {
-                    const repoApiPath = repositoryUrl.replace('https://github.com/', 'https://api.github.com/repos/');
+                    const repoApiPath = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, 'https://api.github.com/repos/');
                     const apiResult = await got(repoApiPath).json();
                     return apiResult.default_branch;
                 }

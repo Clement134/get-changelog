@@ -51,7 +51,7 @@ test('returns CHANGELOG.md url', async () => {
     expect(await changelogFinder.getChangelog('module-name')).toBe('https://github.com/User/module-name/blob/master/CHANGELOG.md');
 });
 
-test('supports default branch', async () => {
+test('supports default branch when https://github.com', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.mockImplementation((url) => {
         if (url === 'https://api.github.com/repos/User/module-name') return {
@@ -79,6 +79,35 @@ test('supports default branch', async () => {
     const changelogFinder = new ChangelogFinder();
     expect(await changelogFinder.getChangelog('module-name')).toBe('https://github.com/User/module-name/blob/develop/CHANGELOG.md');
 });
+
+test('supports default branch when https://www.github.com', async () => {
+    registryUrl.mockReturnValue('https://registry.npmjs.org/');
+    got.mockImplementation((url) => {
+        if (url === 'https://api.github.com/repos/User/module-name') return {
+            json: jest.fn().mockResolvedValue({
+                default_branch: "develop"
+            }),
+        };
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') return 'CHANGELOG DATA';
+        return {
+            json: jest.fn().mockResolvedValue({
+                'dist-tags': {
+                    latest: '1.0.0',
+                },
+                versions: {
+                    '1.0.0': {
+                        repository: {
+                            type: 'git',
+                            url: 'git+https://www.github.com/User/module-name.git',
+                        },
+                    },
+                },
+            }),
+        };
+    });
+    const changelogFinder = new ChangelogFinder();
+    expect(await changelogFinder.getChangelog('module-name')).toBe('https://www.github.com/User/module-name/blob/develop/CHANGELOG.md');
+})
 
 test('returns History.md url', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
