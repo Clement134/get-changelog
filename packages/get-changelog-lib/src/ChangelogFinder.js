@@ -44,9 +44,10 @@ class ChangelogFinder {
      * @private
      * @param {String} repositoryUrl github repository url
      * @param {String} file changelog file name
+     * @param {String} branch the branch where changelog might exist
      * @returns {Promise<String>} changelog url
      */
-    async _tryChangelogLocation(repositoryUrl, file) {
+    async _tryChangelogLocation(repositoryUrl, file, branch) {
         const { customRepositories } = this.configuration;
         let sourcePath = 'blob';
         if (repositoryUrl.includes('bitbucket.org')) {
@@ -61,27 +62,7 @@ class ChangelogFinder {
             });
         }
 
-        const defaultBranch = await (async () =>{
-            try {
-                if (repositoryUrl.includes('github.com')) {
-                    const repoApiPath = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, 'https://api.github.com/repos/');
-                    const oauthToken = process.env['CHANGELOGFINDER_GITHUB_AUTH_TOKEN'];
-                    const requestOptions = (typeof oauthToken === 'string')
-                        ? {
-                            'headers': {
-                                'Authorization': `token ${oauthToken}`
-                            }
-                        }
-                        : {};
-                        const apiResult = await got(repoApiPath, requestOptions).json();
-                    return apiResult.default_branch;
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        })() || 'master';
-
-        const filePath = `${repositoryUrl}/${sourcePath}/${defaultBranch}/${file}`;
+        const filePath = `${repositoryUrl}/${sourcePath}/${branch}/${file}`;
 
         try {
             await got(filePath);
@@ -110,12 +91,32 @@ class ChangelogFinder {
             return null;
         }
 
+        const branch = await (async () =>{
+            try {
+                if (repositoryUrl.includes('github.com')) {
+                    const repoApiPath = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, 'https://api.github.com/repos/');
+                    const oauthToken = process.env['CHANGELOGFINDER_GITHUB_AUTH_TOKEN'];
+                    const requestOptions = (typeof oauthToken === 'string')
+                        ? {
+                            'headers': {
+                                'Authorization': `token ${oauthToken}`
+                            }
+                        }
+                        : {};
+                    const apiResult = await got(repoApiPath, requestOptions).json();
+                    return apiResult.default_branch;
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        })() || 'master';
+
         // try all possible location for changelog (with priority)
         const possibleLocations = ['CHANGELOG.md', 'changelog.md', 'History.md', 'HISTORY.md', 'CHANGES.md'];
         const defaultChangelog = `${repositoryUrl}/releases`;
         let changelog;
         for (let i = 0; i < possibleLocations.length; i++) {
-            changelog = await this._tryChangelogLocation(repositoryUrl, possibleLocations[i]);
+            changelog = await this._tryChangelogLocation(repositoryUrl, possibleLocations[i], branch);
             if (changelog) break;
         }
 
