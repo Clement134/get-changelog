@@ -109,6 +109,39 @@ test('supports default branch when https://www.github.com', async () => {
     expect(await changelogFinder.getChangelog('module-name')).toBe('https://www.github.com/User/module-name/blob/develop/CHANGELOG.md');
 })
 
+test('use github token to get default branch', async () => {
+    process.env.CHANGELOGFINDER_GITHUB_AUTH_TOKEN = 'githubToken';
+    registryUrl.mockReturnValue('https://registry.npmjs.org/');
+    const gotMock = got.mockImplementation((url) => {
+        if (url === 'https://api.github.com/repos/User/module-name')
+            return {
+                json: jest.fn().mockResolvedValue({
+                    default_branch: 'develop',
+                }),
+            };
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') return 'CHANGELOG DATA';
+        return {
+            json: jest.fn().mockResolvedValue({
+                'dist-tags': {
+                    latest: '1.0.0',
+                },
+                versions: {
+                    '1.0.0': {
+                        repository: {
+                            type: 'git',
+                            url: 'git+https://github.com/User/module-name.git',
+                        },
+                    },
+                },
+            }),
+        };
+    });
+    const changelogFinder = new ChangelogFinder();
+    expect(await changelogFinder.getChangelog('module-name')).toBe('https://github.com/User/module-name/blob/develop/CHANGELOG.md');
+    expect(gotMock).nthCalledWith(2, 'https://api.github.com/repos/User/module-name', { headers: { Authorization: 'token githubToken' } });
+    delete process.env.CHANGELOGFINDER_GITHUB_AUTH_TOKEN;
+});
+
 test('returns History.md url', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.mockImplementation((url) => {
