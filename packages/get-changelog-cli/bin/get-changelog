@@ -5,7 +5,7 @@ const program = require('commander');
 const Runner = require('../src/Runner');
 
 program
-    .version('1.1.0', '-v, --version')
+    .version('1.2.0', '-v, --version')
     .option('-c, --check', 'check package.json upgrades using npm-check-updates')
     .option('-m, --module <moduleName>', 'get changelog for an npm module')
     .option('-r, --reporter <reporterName>', 'reporter to use (console, console-jira)')

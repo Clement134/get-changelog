@@ -24,6 +24,12 @@ const ChangelogFinder = require('get-changelog-lib');
 })();
 ```
 
+## Advanced usage
+
+### GitHub token
+
+Github API is used to fetch the default branch of each repository, this API is limited to 60 requests per hours. In order to increase this rate limit it's possible to add a github token (without specific permissions) in the `CHANGELOGFINDER_GITHUB_AUTH_TOKEN` environment variable.
+
 ### CLI integration
 
 See [get-changelog-cli](https://www.npmjs.com/package/get-changelog-cli)

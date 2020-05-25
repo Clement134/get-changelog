@@ -51,6 +51,10 @@ The following reporters are implemented:
 | `console`      | (default reporter) print packages data in the console |
 | `console-jira` | print packages data in jira markup                    |
 
+#### GitHub token
+
+Github API is used to fetch the default branch of each repository, this API is limited to 60 requests per hours. In order to increase this rate limit it's possible to add a github token (without specific permissions) in the `CHANGELOGFINDER_GITHUB_AUTH_TOKEN` environment variable.
+
 ## API usage
 
 See [get-changelog-lib](https://www.npmjs.com/package/get-changelog-lib)
