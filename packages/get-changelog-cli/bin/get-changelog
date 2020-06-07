@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-
+const packageJson = require('../package.json');
 const Runner = require('../src/Runner');
 
 program
-    .version('1.2.0', '-v, --version')
+    .version(packageJson.version, '-v, --version')
     .option('-c, --check', 'check package.json upgrades using npm-check-updates')
     .option('-m, --module <moduleName>', 'get changelog for an npm module')
     .option('-r, --reporter <reporterName>', 'reporter to use (console, console-jira)')
