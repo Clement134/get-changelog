@@ -32,7 +32,7 @@ class Cache {
         try {
             await fs.writeFile(this.path, JSON.stringify(this.data));
         } catch (err) {
-            console.log('Error writing cache file');
+            console.error('Error writing cache file');
         }
     }
 

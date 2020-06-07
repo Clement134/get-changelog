@@ -20,7 +20,7 @@ ora.mockImplementation(() => ({
     }),
 }));
 
-test('print changelog url', async () => {
+test('[module] print changelog url', async () => {
     const logSpy = jest.spyOn(global.console, 'log');
     const getChangelogStub = jest.fn().mockResolvedValue('http://changelog.com');
     ChangelogFinder.mockImplementation(() => ({
@@ -32,7 +32,7 @@ test('print changelog url', async () => {
     expect(logSpy).toBeCalledWith('http://changelog.com');
 });
 
-test('print and open changelog url', async () => {
+test('[module] print and open changelog url', async () => {
     const logSpy = jest.spyOn(global.console, 'log');
     const getChangelogStub = jest.fn().mockResolvedValue('http://changelog.com');
     ChangelogFinder.mockImplementation(() => ({
@@ -45,7 +45,33 @@ test('print and open changelog url', async () => {
     expect(open).toBeCalled();
 });
 
-test('print nothing (all module are up to date)', async () => {
+test('[check] log error for invalid package.json and exit', async () => {
+    const errorSpy = jest.spyOn(global.console, 'error');
+    const exitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {});
+    const getChangelogStub = jest.fn().mockResolvedValue('http://changelog.com');
+    ChangelogFinder.mockImplementation(() => ({
+        getChangelog: getChangelogStub,
+    }));
+    const runner = new Runner({ check: true, packageFileOption: './mocks/invalid/invalidPackage.json' });
+    await runner.run();
+    expect(errorSpy).toBeCalledWith('Invalid package.json file in ./mocks/invalid/invalidPackage.json');
+    expect(exitSpy).toBeCalled();
+});
+
+test('[check] print nothing (all module are up to date)', async () => {
+    const errorSpy = jest.spyOn(global.console, 'error');
+    const getChangelogStub = jest.fn().mockResolvedValue('http://changelog.com');
+    ChangelogFinder.mockImplementation(() => ({
+        getChangelog: getChangelogStub,
+    }));
+    const runner = new Runner({ check: true, configurationFilePath: './mocks/invalid/invalidConfig.json' });
+    await runner.run();
+    expect(getChangelogStub).not.toBeCalled();
+    expect(errorSpy).toBeCalledWith('Invalid configuration file');
+    expect(buildReport).toBeCalledWith([]);
+});
+
+test('[check] print nothing (all module are up to date)', async () => {
     const getChangelogStub = jest.fn().mockResolvedValue('http://changelog.com');
     ChangelogFinder.mockImplementation(() => ({
         getChangelog: getChangelogStub,
@@ -56,7 +82,7 @@ test('print nothing (all module are up to date)', async () => {
     expect(buildReport).toBeCalledWith([]);
 });
 
-test('print changelogs (without cache)', async () => {
+test('[check] print changelogs (without cache)', async () => {
     ncu.run = jest.fn().mockResolvedValue({ module: '^1.0.0' });
     const getChangelogStub = jest.fn().mockResolvedValue('http://changelog.com');
     ChangelogFinder.mockImplementation(() => ({
@@ -66,7 +92,7 @@ test('print changelogs (without cache)', async () => {
     Cache.mockImplementation(() => ({
         write: writeSpy,
     }));
-    const runner = new Runner({ check: true, packageFileOption: './mocks/valid' });
+    const runner = new Runner({ check: true, packageFileOption: './mocks/valid/package.json' });
     await runner.run();
     expect(getChangelogStub).toBeCalledWith('module', '0.0.1');
     expect(buildReport).toBeCalledWith([
@@ -82,7 +108,7 @@ test('print changelogs (without cache)', async () => {
     expect(writeSpy).not.toBeCalled();
 });
 
-test('print changelogs (with cache)', async () => {
+test('[check] print changelogs (with cache)', async () => {
     ncu.run = jest.fn().mockResolvedValue({ module: '^1.0.0' });
     const getChangelogStub = jest.fn().mockResolvedValue('http://changelog.com');
     ChangelogFinder.mockImplementation(() => ({
@@ -94,7 +120,7 @@ test('print changelogs (with cache)', async () => {
         init: initSpy,
         write: writeSpy,
     }));
-    const runner = new Runner({ check: true, packageFileOption: './mocks/valid', cache: true });
+    const runner = new Runner({ check: true, packageFileOption: './mocks/valid/package.json', cache: true });
     await runner.run();
     expect(initSpy).toBeCalled();
     expect(getChangelogStub).toBeCalledWith('module', '0.0.1');

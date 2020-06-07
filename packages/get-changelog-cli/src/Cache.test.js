@@ -31,3 +31,12 @@ test('write data', async () => {
     expect(JSON.parse(cacheFile)).toEqual({ moduleName: 'https://changelogUrl.com' });
     await fs.unlink('./mocks/newCache.json');
 });
+
+test('log error when it is not possible to write cache file', async () => {
+    const errorSpy = jest.spyOn(global.console, 'error');
+    const cache = new Cache({ path: './mocks/invalidPath/newCache.json' });
+    await cache.init();
+    await cache.set('moduleName', 'https://changelogUrl.com');
+    await cache.write();
+    expect(errorSpy).toBeCalledWith('Error writing cache file');
+});

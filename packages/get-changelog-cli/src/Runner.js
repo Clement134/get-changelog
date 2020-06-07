@@ -35,7 +35,8 @@ class Runner {
     async _parseConfiguration() {
         let configuration = {};
         try {
-            const configFile = await fs.readFile('../config.json');
+            const configPath = this.options.configurationFilePath || '../config.json';
+            const configFile = await fs.readFile(configPath);
             configuration = JSON.parse(configFile);
         } catch (err) {
             if (err.code !== 'ENOENT') {
@@ -79,14 +80,14 @@ class Runner {
             const modulesToUpgrade = (await ncu.run(ncuOptions)) || {};
 
             // get current versions
-            const packageFilePath = packageFileOption || process.cwd();
-            const packageFile = await fs.readFile(`${packageFilePath}/package.json`);
+            const packageFilePath = packageFileOption || `${process.cwd()}/package.json`;
+            const packageFile = await fs.readFile(packageFilePath);
             let packageData;
             try {
                 packageData = JSON.parse(packageFile);
             } catch (err) {
-                console.log(`Invalid package.json file in ${packageFilePath}`);
-                process.exit();
+                console.error(`Invalid package.json file in ${packageFilePath}`);
+                return process.exit();
             }
             const dependencies = packageData.dependencies || {};
             const devDependencies = packageData.devDependencies || {};
@@ -119,6 +120,7 @@ class Runner {
         }
 
         if (configuration.cache) cache.write();
+        return 0;
     }
 }
 
