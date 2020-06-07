@@ -11,19 +11,27 @@
     },
     "homepage": "https://github.com/Clement134/get-changelog#readme",
     "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
         "test": "jest"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
     },
     "author": "Clement134",
     "license": "MIT",
     "devDependencies": {
-        "eslint": "^7.0.0",
+        "eslint": "^7.2.0",
         "eslint-config-airbnb-base": "^14.1.0",
-        "eslint-config-prettier": "^6.10.1",
+        "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-prettier": "^3.1.3",
+        "husky": "^4.2.5",
         "jest": "^26.0.1",
-        "lerna": "^3.20.2",
-        "prettier": "^2.0.4"
-    },
-    "dependencies": {}
+        "lerna": "^3.22.0",
+        "prettier": "^2.0.5",
+        "pretty-quick": "^2.0.1"
+    }
 }

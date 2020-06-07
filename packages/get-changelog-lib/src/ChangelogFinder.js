@@ -91,38 +91,30 @@ class ChangelogFinder {
             return null;
         }
 
-        const branch = await (async () =>{
+        let branch;
+        if (repositoryUrl.includes('github.com')) {
             try {
-                if (repositoryUrl.includes('github.com')) {
-                    const repoApiPath = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, 'https://api.github.com/repos/');
-                    const oauthToken = process.env['CHANGELOGFINDER_GITHUB_AUTH_TOKEN'];
-                    const requestOptions = (typeof oauthToken === 'string')
-                        ? {
-                            'headers': {
-                                'Authorization': `token ${oauthToken}`
-                            }
-                        }
-                        : {};
-                    const apiResult = await got(repoApiPath, requestOptions).json();
-                    return apiResult.default_branch;
-                }
-            } catch (e) {
-                console.log(e);
+                const repoApiPath = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, 'https://api.github.com/repos/');
+                const oauthToken = process.env.CHANGELOGFINDER_GITHUB_AUTH_TOKEN;
+                const requestOptions = typeof oauthToken === 'string' ? { headers: { Authorization: `token ${oauthToken}` } } : {};
+                const apiResult = await got(repoApiPath, requestOptions).json();
+                branch = apiResult.default_branch;
+            } catch (err) {
+                console.error(err);
             }
-        })() || 'master';
+        }
+        branch = branch || 'master';
+
+        const extensions = ['md', 'txt'];
+        const names = ['CHANGELOG', 'changelog', 'ChangeLog', 'History', 'HISTORY', 'CHANGES'];
+        const possibleLocations = [];
+        extensions.forEach((extension) => {
+            names.forEach((name) => {
+                possibleLocations.push(`${name}.${extension}`);
+            });
+        });
 
         // try all possible location for changelog (with priority)
-        const possibleLocations = (function() {
-            const extensions = ['md', 'txt'];
-            const names = ['CHANGELOG', 'changelog', 'ChangeLog', 'History', 'HISTORY', 'CHANGES'];
-            const combinations = [];
-            extensions.forEach(extension => {
-                names.forEach(name => {
-                    combinations.push(`${name}.${extension}`);
-                });
-            });
-            return combinations;
-        })();
         const defaultChangelog = `${repositoryUrl}/releases`;
         let changelog;
         for (let i = 0; i < possibleLocations.length; i++) {
