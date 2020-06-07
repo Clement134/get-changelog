@@ -1,0 +1,6 @@
+{
+    "bluebird": "http://bluebirdjs.com/docs/changelog.html",
+    "lodash": "https://github.com/lodash/lodash/wiki/Changelog",
+    "newrelic": "https://github.com/newrelic/node-newrelic/blob/master/NEWS.md",
+    "underscore": "https://underscorejs.org/#changelog"
+}

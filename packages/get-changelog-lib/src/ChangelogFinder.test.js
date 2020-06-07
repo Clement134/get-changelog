@@ -39,6 +39,13 @@ test('returns changelog url from cache', async () => {
     );
 });
 
+test('returns specific changelog url', async () => {
+    const changelogFinder = new ChangelogFinder({});
+    expect(registryUrl).not.toBeCalled();
+    expect(got).not.toBeCalled();
+    expect(await changelogFinder.getChangelog('lodash')).toBe('https://github.com/lodash/lodash/wiki/Changelog');
+});
+
 test('returns CHANGELOG.md url', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.mockImplementation((url) => {

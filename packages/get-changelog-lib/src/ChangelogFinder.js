@@ -2,6 +2,8 @@ const got = require('got');
 const registryUrl = require('registry-url');
 const process = require('process');
 
+const specificChangelogLocations = require('../data/changelogs');
+
 class ChangelogFinder {
     /**
      * @constructor
@@ -84,6 +86,7 @@ class ChangelogFinder {
      */
     async getChangelog(moduleName, moduleVersion) {
         if (this.cache && this.cache.get(moduleName)) return this.cache.get(moduleName);
+        if (Object.keys(specificChangelogLocations).includes(moduleName)) return specificChangelogLocations[moduleName];
 
         const repositoryUrl = await this._getRepositoryUrl(moduleName, moduleVersion);
         if (!repositoryUrl) {
