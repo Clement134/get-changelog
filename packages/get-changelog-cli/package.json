@@ -22,11 +22,11 @@
     "author": "Clement134",
     "license": "MIT",
     "dependencies": {
-        "commander": "^5.0.0",
+        "commander": "^5.0.1",
         "get-changelog-lib": "^1.1.0",
-        "npm-check-updates": "^5.0.0",
-        "open": "^7.0.3",
-        "ora": "^4.0.3",
+        "npm-check-updates": "^6.0.1",
+        "open": "^7.0.4",
+        "ora": "^4.0.4",
         "semver": "^7.3.2",
         "terminal-link": "^2.1.1"
     }

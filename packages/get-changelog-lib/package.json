@@ -17,7 +17,7 @@
     "author": "Clement134",
     "license": "MIT",
     "dependencies": {
-        "got": "^11.1.2",
+        "got": "^11.3.0",
         "registry-url": "^5.1.0"
     }
 }
