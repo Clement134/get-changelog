@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.0
+
+### Feature
+
+-   Add exceptions for packages that doesn't follow the convention for changelog location
+
+### Chore
+
+-   Upgrade dependencies
+-   Enforce best practices and code style with eslint and prettier
+-   Improve test coverage
+
 ## 1.1.0
 
 ### Features

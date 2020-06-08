@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.3.0
+
+### Feature
+
+-   Add exceptions for packages that doesn't follow the convention for changelog location
+-   Display package version in the CLI (-v option)
+
+### Chore
+
+-   Upgrade dependencies
+-   Enforce best practices and code style with eslint and prettier
+-   Improve test coverage
+
 ## 1.2.0
 
 -   Upgrade get-changelog-lib@1.1.0
