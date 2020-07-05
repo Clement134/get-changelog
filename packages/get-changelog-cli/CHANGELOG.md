@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0
+
+### Feature
+
+-   Add options for [npm-check-updates](https://github.com/raineorshine/npm-check-updates) configuration (filtering, versions preferences...)
+
+### Chore
+
+-   Upgrade dependencies
+
 ## 1.3.0
 
 ### Feature

@@ -71,7 +71,14 @@ class Runner {
         }
 
         if (check && !moduleName) {
-            const ncuOptions = {};
+            const ncuOptions = {
+                filter: this.options.filter,
+                global: this.options.global,
+                minimal: this.options.minimal,
+                newest: this.options.newest,
+                greatest: this.options.greatest,
+                reject: this.options.reject,
+            };
             if (packageFileOption) {
                 ncuOptions.packageFile = packageFileOption;
             }

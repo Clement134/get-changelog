@@ -1,4 +1,4 @@
-# get-changelog-cli [![version](https://img.shields.io/npm/v/get-changelog-cli?style=flat-square)](https://www.npmjs.com/package/get-changelog-cli) [![license](https://img.shields.io/npm/l/get-changelog-cli?style=flat-square)](/LICENSE)
+# get-changelog-cli [![version](https://img.shields.io/npm/v/get-changelog-cli?style=flat-square)](https://www.npmjs.com/package/get-changelog-cli) ![build](https://img.shields.io/github/workflow/status/Clement134/get-changelog/Node.js%20CI?style=flat-square) [![license](https://img.shields.io/npm/l/get-changelog-cli?style=flat-square)](/LICENSE)
 
 > A CLI tool to easily find changelogs
 
@@ -26,6 +26,12 @@ Options:
   -r, --reporter <reporterName>  reporter to use (console, console-jira)
   -o, --open                     open changelog url with the default browser (only usable with -m)
   --cache                        use cache to improve performances
+  -f, --filter <matches>         (ncu option) include only package names matching the given string, comma-or-space-delimited list, or /regex/
+  -x, --reject <matches>         (ncu option) exclude packages matching the given string, comma-or-space-delimited list, or /regex/
+  -g, --global                   (ncu option) check global packages instead of in the current project
+  -n, --newest                   (ncu option) find the newest versions available instead of the latest stable versions
+  -t, --greatest                 (ncu option) find the highest versions available instead of the latest stable versions
+  --minimal                      (ncu option) do not upgrade newer versions that are already satisfied by the version range according to semver
   -h, --help                     display help for command
 ```
 
@@ -38,6 +44,12 @@ Options:
 #### -c, --check
 
 ![Check example](/images/check-example.png)
+
+Version checking can be configured using [npm-check-updates](https://github.com/raineorshine/npm-check-updates) options:
+
+-   `-f, --filter` or `-x, --reject` to include/exclude some packages
+-   `-n, --newest`, `-t, --greatest`, `--minimal` to choose which version to use
+-   `-g, --global` to check global modules
 
 ### Advanced usage
 

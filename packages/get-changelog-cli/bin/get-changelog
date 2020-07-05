@@ -10,7 +10,16 @@ program
     .option('-m, --module <moduleName>', 'get changelog for an npm module')
     .option('-r, --reporter <reporterName>', 'reporter to use (console, console-jira)')
     .option('-o, --open', 'open changelog url with the default browser (only usable with -m)')
-    .option('--cache', 'use cache to improve performances');
+    .option('--cache', 'use cache to improve performances')
+    .option(
+        '-f, --filter <matches>',
+        '(ncu option) include only package names matching the given string, comma-or-space-delimited list, or /regex/'
+    )
+    .option('-x, --reject <matches>', '(ncu option) exclude packages matching the given string, comma-or-space-delimited list, or /regex/')
+    .option('-g, --global', '(ncu option) check global packages instead of in the current project')
+    .option('-n, --newest', '(ncu option) find the newest versions available instead of the latest stable versions')
+    .option('-t, --greatest', '(ncu option) find the highest versions available instead of the latest stable versions')
+    .option('--minimal', '(ncu option) do not upgrade newer versions that are already satisfied by the version range according to semver');
 
 program.parse(process.argv);
 
