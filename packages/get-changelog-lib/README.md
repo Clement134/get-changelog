@@ -1,4 +1,4 @@
-# get-changelog-lib [![version](https://img.shields.io/npm/v/get-changelog-lib?style=flat-square)](https://www.npmjs.com/package/get-changelog-lib) [![license](https://img.shields.io/npm/l/get-changelog-lib?style=flat-square)](./LICENSE)
+# get-changelog-lib [![version](https://img.shields.io/npm/v/get-changelog-lib?style=flat-square)](https://www.npmjs.com/package/get-changelog-lib) ![build](https://img.shields.io/github/workflow/status/Clement134/get-changelog/Node.js%20CI?style=flat-square) [![license](https://img.shields.io/npm/l/get-changelog-lib?style=flat-square)](./LICENSE)
 
 > Library to get changelog url
 
