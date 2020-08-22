@@ -94,7 +94,7 @@ test('[check] print changelogs (without cache)', async () => {
     }));
     const runner = new Runner({ check: true, packageFileOption: './mocks/valid/package.json' });
     await runner.run();
-    expect(getChangelogStub).toBeCalledWith('module', '0.0.1');
+    expect(getChangelogStub).toBeCalledWith('module', '1.0.0');
     expect(buildReport).toBeCalledWith([
         {
             changelog: 'http://changelog.com',
@@ -123,7 +123,7 @@ test('[check] print changelogs (with cache)', async () => {
     const runner = new Runner({ check: true, packageFileOption: './mocks/valid/package.json', cache: true });
     await runner.run();
     expect(initSpy).toBeCalled();
-    expect(getChangelogStub).toBeCalledWith('module', '0.0.1');
+    expect(getChangelogStub).toBeCalledWith('module', '1.0.0');
     expect(buildReport).toBeCalledWith([
         {
             changelog: 'http://changelog.com',

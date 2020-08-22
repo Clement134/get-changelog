@@ -107,7 +107,7 @@ class Runner {
                 const newVersion = rangeToVersion(modulesToUpgrade[dependencyName]);
                 const dependencyType = dependencies[dependencyName] ? 'dependencies' : 'devDependencies';
                 return new Promise((resolve) => {
-                    changelogFinder.getChangelog(dependencyName, currentVersion).then((changelog) => {
+                    changelogFinder.getChangelog(dependencyName, newVersion).then((changelog) => {
                         const data = { name: dependencyName, changelog, dependencyType };
                         if (currentVersion) data.from = currentVersion;
                         if (newVersion) data.to = newVersion;

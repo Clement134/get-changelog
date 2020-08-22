@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.0
+
+### Fix
+
+-   Find changelog for latest version instead of current one to prevent errors with version removed from registry
+
+### Chore
+
+-   Upgrade dependencies
+
 ## 1.4.0
 
 ### Feature
