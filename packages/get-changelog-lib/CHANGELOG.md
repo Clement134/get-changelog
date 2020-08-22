@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0
+
+### Fix
+
+-   Fix verification of registry url
+
+### Chore
+
+-   Upgrade dependencies
+
 ## 1.3.0
 
 ### Chore

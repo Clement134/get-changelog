@@ -1,6 +1,7 @@
 const got = require('got');
 const registryUrl = require('registry-url');
 const process = require('process');
+const url = require('url');
 
 const specificChangelogLocations = require('../data/changelogs');
 
@@ -52,7 +53,9 @@ class ChangelogFinder {
     async _tryChangelogLocation(repositoryUrl, file, branch) {
         const { customRepositories } = this.configuration;
         let sourcePath = 'blob';
-        if (repositoryUrl.includes('bitbucket.org')) {
+
+        const { host } = url.parse(repositoryUrl);
+        if (host.includes('bitbucket.org')) {
             sourcePath = 'src';
         }
 
@@ -95,7 +98,8 @@ class ChangelogFinder {
         }
 
         let branch;
-        if (repositoryUrl.includes('github.com')) {
+        const { host } = url.parse(repositoryUrl);
+        if (host.includes('github.com')) {
             try {
                 const repoApiPath = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, 'https://api.github.com/repos/');
                 const oauthToken = process.env.CHANGELOGFINDER_GITHUB_AUTH_TOKEN;
