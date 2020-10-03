@@ -81,6 +81,27 @@ class ChangelogFinder {
     }
 
     /**
+     * Check if release is changelog
+     * @private
+     * @param {String} repositoryUrl github repository url
+     * @returns {Promise<Boolean>} release is changelog
+     */
+    async _isReleaseChangelog(repositoryUrl) {
+        const repository = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, '');
+        const releaseUrl = `https://api.github.com/repos/${repository}/releases/latest`;
+
+        try {
+            const release = await got(releaseUrl).json();
+            return release.body && release.body.length > 0;
+        } catch (error) {
+            if (error.response && error.response.statusCode !== 404) {
+                console.log(error);
+            }
+            return false;
+        }
+    }
+
+    /**
      * Get npm package changelog
      * @public
      * @param {String} moduleName npm module name
@@ -129,7 +150,12 @@ class ChangelogFinder {
             if (changelog) break;
         }
 
-        const changelogUrl = changelog || defaultChangelog;
+        let changelogUrl = changelog;
+        if (!changelog) {
+            const isChangelog = await this._isReleaseChangelog(repositoryUrl);
+            changelogUrl = isChangelog ? defaultChangelog : undefined;
+        }
+
         if (this.cache) this.cache.set(moduleName, changelogUrl);
 
         return changelogUrl;
