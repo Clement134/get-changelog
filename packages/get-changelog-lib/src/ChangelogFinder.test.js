@@ -192,6 +192,42 @@ test('returns History.md url', async () => {
     expect(await changelogFinder.getChangelog('module-name')).toBe('https://github.com/User/module-name/blob/master/History.md');
 });
 
+test('return undefined when release is not changelog', async () => {
+    registryUrl.mockReturnValue('https://registry.npmjs.org/');
+    got.mockImplementation((url) => {
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/changelog.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/History.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/HISTORY.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGES.md') throw new ErrorHttp(500);
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/changelog.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/History.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/HISTORY.txt') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGES.txt') throw new ErrorHttp(500);
+
+        return {
+            json: jest.fn().mockResolvedValue({
+                'dist-tags': {
+                    latest: '1.0.0',
+                },
+                versions: {
+                    '1.0.0': {
+                        repository: {
+                            type: 'git',
+                            url: 'git+https://github.com/User/module-name.git',
+                        },
+                    },
+                },
+            }),
+        };
+    });
+    const changelogFinder = new ChangelogFinder();
+    expect(await changelogFinder.getChangelog('module-name')).toBe(undefined);
+});
+
 test('returns github releases', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.mockImplementation((url) => {
@@ -213,6 +249,7 @@ test('returns github releases', async () => {
                 'dist-tags': {
                     latest: '1.0.0',
                 },
+                body: 'test',
                 versions: {
                     '1.0.0': {
                         repository: {
