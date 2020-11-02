@@ -9,6 +9,10 @@
 | [get-changelog-cli](./packages/get-changelog-cli) | CLI tool to find changelogs    | [![version](https://img.shields.io/npm/v/get-changelog-cli?style=flat-square)](https://www.npmjs.com/package/get-changelog-cli)  |
 | [get-changelog-lib](./packages/get-changelog-lib) | Library to get changelogs urls | [![version](https://img.shields.io/npm/v/get-changelog-lib?style=flat-square) ](https://www.npmjs.com/package/get-changelog-lib) |
 
+## Stargazers
+
+[![Stargazers repo roster for @clement134/get-changelog](https://reporoster.com/stars/clement134/get-changelog)](https://github.com/clement134/get-changelog/stargazers)
+
 ## License
 
 MIT: [LICENSE](/LICENSE)

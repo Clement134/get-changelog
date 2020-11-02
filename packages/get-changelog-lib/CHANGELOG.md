@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.0
+
+### Feature
+
+-   Improve accuracy for npm most popular packages (top 500)
+
+### Chore
+
+-   Upgrade dependencies
+
 ## 1.4.0
 
 ### Fix

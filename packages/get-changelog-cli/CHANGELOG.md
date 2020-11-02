@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.6.0
+
+### Feature
+
+-   Automatically suggest issue creation if changelog file not found
+
+### Chore
+
+-   Upgrade dependencies
+
 ## 1.5.0
 
 ### Fix
