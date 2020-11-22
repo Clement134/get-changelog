@@ -1,8 +1,8 @@
 const got = require('got');
 const registryUrl = require('registry-url');
-const process = require('process');
 const url = require('url');
 
+const GithubAPI = require('./GithubAPI');
 const specificChangelogLocations = require('../data/changelogs');
 
 class ChangelogFinder {
@@ -81,27 +81,6 @@ class ChangelogFinder {
     }
 
     /**
-     * Check if release is changelog
-     * @private
-     * @param {String} repositoryUrl github repository url
-     * @returns {Promise<Boolean>} release is changelog
-     */
-    async _isReleaseChangelog(repositoryUrl) {
-        const repository = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, '');
-        const releaseUrl = `https://api.github.com/repos/${repository}/releases/latest`;
-
-        try {
-            const release = await got(releaseUrl).json();
-            return release.body && release.body.length > 0;
-        } catch (error) {
-            if (error.response && error.response.statusCode !== 404) {
-                console.log(error);
-            }
-            return false;
-        }
-    }
-
-    /**
      * Get npm package changelog
      * @public
      * @param {String} moduleName npm module name
@@ -118,18 +97,12 @@ class ChangelogFinder {
             return null;
         }
 
+        const githubAPI = new GithubAPI(repositoryUrl);
+
         let branch;
         const { host } = url.parse(repositoryUrl);
-        if (host.includes('github.com')) {
-            try {
-                const repoApiPath = repositoryUrl.replace(/https:\/\/(www\.)?github.com\//, 'https://api.github.com/repos/');
-                const oauthToken = process.env.CHANGELOGFINDER_GITHUB_AUTH_TOKEN;
-                const requestOptions = typeof oauthToken === 'string' ? { headers: { Authorization: `token ${oauthToken}` } } : {};
-                const apiResult = await got(repoApiPath, requestOptions).json();
-                branch = apiResult.default_branch;
-            } catch (err) {
-                console.error(err);
-            }
+        if (host.includes('github.com') && githubAPI.isActivated()) {
+            branch = await githubAPI.getDefaultBranch();
         }
         branch = branch || 'master';
 
@@ -152,8 +125,12 @@ class ChangelogFinder {
 
         let changelogUrl = changelog;
         if (!changelog) {
-            const isChangelog = await this._isReleaseChangelog(repositoryUrl);
-            changelogUrl = isChangelog ? defaultChangelog : undefined;
+            if (host.includes('github.com') && githubAPI.isActivated()) {
+                const isChangelog = await githubAPI.isReleaseChangelog(repositoryUrl);
+                changelogUrl = isChangelog ? defaultChangelog : null;
+            } else {
+                changelogUrl = defaultChangelog;
+            }
         }
 
         if (this.cache) this.cache.set(moduleName, changelogUrl);
