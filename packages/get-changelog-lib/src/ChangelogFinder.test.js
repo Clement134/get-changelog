@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const registryUrl = require('registry-url');
 const got = require('got');
 const GithubAPI = require('./GithubAPI');
