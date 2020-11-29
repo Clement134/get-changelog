@@ -70,7 +70,7 @@ class ChangelogFinder {
         const filePath = `${repositoryUrl}/${sourcePath}/${branch}/${file}`;
 
         try {
-            await got(filePath);
+            await got.head(filePath);
             return filePath;
         } catch (error) {
             if (error.response && error.response.statusCode !== 404) {
