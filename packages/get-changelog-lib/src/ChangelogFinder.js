@@ -57,6 +57,8 @@ class ChangelogFinder {
         const { host } = url.parse(repositoryUrl);
         if (host.includes('bitbucket.org')) {
             sourcePath = 'src';
+        } else if (host.includes('gitlab.com')) {
+            sourcePath = '-/blob';
         }
 
         if (customRepositories) {
@@ -68,11 +70,12 @@ class ChangelogFinder {
         }
 
         const filePath = `${repositoryUrl}/${sourcePath}/${branch}/${file}`;
-
         try {
-            await got.head(filePath);
-            return filePath;
+            const { statusCode } = await got.head(filePath, { followRedirect: false });
+            if (statusCode === 200) return filePath;
+            return null;
         } catch (error) {
+            console.log(error);
             if (error.response && error.response.statusCode !== 404) {
                 console.log(error);
             }

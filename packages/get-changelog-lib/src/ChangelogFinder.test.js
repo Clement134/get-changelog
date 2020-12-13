@@ -52,7 +52,7 @@ test('returns specific changelog url', async () => {
 test('returns CHANGELOG.md url', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.head = jest.fn().mockImplementation((url) => {
-        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') return 'CHANGELOG DATA';
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') return { statusCode: 200 };
     });
     got.mockImplementation(() => ({
         json: jest.fn().mockResolvedValue({
@@ -82,7 +82,7 @@ test('returns CHANGELOG.md url', async () => {
 test('use default branch for github (if token provided)', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.head = jest.fn().mockImplementation((url) => {
-        if (url === 'https://github.com/User/module-name/blob/develop/CHANGELOG.md') return 'CHANGELOG DATA';
+        if (url === 'https://github.com/User/module-name/blob/develop/CHANGELOG.md') return { statusCode: 200 };
     });
     got.mockImplementation(() => ({
         json: jest.fn().mockResolvedValue({
@@ -110,7 +110,8 @@ test('use default branch for github (if token provided)', async () => {
 test('use master branch when github api is not available (if token provided)', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.head = jest.fn().mockImplementation((url) => {
-        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') return 'CHANGELOG DATA';
+        console.log(url);
+        if (url === 'https://www.github.com/User/module-name/blob/master/CHANGELOG.md') return { statusCode: 200 };
     });
     got.mockImplementation(() => ({
         json: jest.fn().mockResolvedValue({
@@ -141,7 +142,7 @@ test('returns History.md url', async () => {
         if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/changelog.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.md') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/History.md') return 'CHANGELOG DATA';
+        if (url === 'https://github.com/User/module-name/blob/master/History.md') return { statusCode: 200 };
     });
     got.mockImplementation(() => ({
         json: jest.fn().mockResolvedValue({
@@ -204,7 +205,7 @@ test('return null when release is not changelog (if token provided)', async () =
 
 test('returns github releases', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
-    jest.fn().mockImplementation((url) => {
+    got.head = jest.fn().mockImplementation((url) => {
         if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/changelog.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.md') throw new ErrorHttp(404);
@@ -243,8 +244,8 @@ test('returns github releases', async () => {
 
 test('returns changelog on bitbucket', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
-    jest.fn().mockImplementation((url) => {
-        if (url === 'https://github.com/User/module-name/src/master/CHANGELOG.md') return 'CHANGELOG DATA';
+    got.head = jest.fn().mockImplementation((url) => {
+        if (url === 'https://bitbucket.org/User/module-name/src/master/CHANGELOG.md') return { statusCode: 200 };
     });
     got.mockImplementation(() => ({
         json: jest.fn().mockResolvedValue({
@@ -265,10 +266,35 @@ test('returns changelog on bitbucket', async () => {
     expect(await changelogFinder.getChangelog('module-name')).toBe('https://bitbucket.org/User/module-name/src/master/CHANGELOG.md');
 });
 
+test('returns changelog on gitlab', async () => {
+    registryUrl.mockReturnValue('https://registry.npmjs.org/');
+    got.head = jest.fn().mockImplementation((url) => {
+        if (url === 'https://gitlab.com/User/module-name/-/blob/master/CHANGELOG.md') return { statusCode: 302 };
+        if (url === 'https://gitlab.com/User/module-name/-/blob/master/changelog.md') return { statusCode: 200 };
+    });
+    got.mockImplementation(() => ({
+        json: jest.fn().mockResolvedValue({
+            'dist-tags': {
+                latest: '1.0.0',
+            },
+            versions: {
+                '1.0.0': {
+                    repository: {
+                        type: 'git',
+                        url: 'git+https://gitlab.com/User/module-name.git',
+                    },
+                },
+            },
+        }),
+    }));
+    const changelogFinder = new ChangelogFinder();
+    expect(await changelogFinder.getChangelog('module-name')).toBe('https://gitlab.com/User/module-name/-/blob/master/changelog.md');
+});
+
 test('returns changelog on custom repository', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
-    jest.fn().mockImplementation((url) => {
-        if (url === 'https://private-repo2.com/User/module-name/browse/CHANGELOG.md') return 'CHANGELOG DATA';
+    got.head = jest.fn().mockImplementation((url) => {
+        if (url === 'https://private-repo2.com/User/module-name/browse/master/CHANGELOG.md') return { statusCode: 200 };
     });
     got.mockImplementation(() => ({
         json: jest.fn().mockResolvedValue({
