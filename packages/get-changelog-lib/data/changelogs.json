@@ -9,6 +9,7 @@
     "esprima": "https://github.com/jquery/esprima/blob/master/ChangeLog",
     "react-router": "https://github.com/ReactTraining/react-router/releases",
     "react-redux": "https://github.com/reduxjs/react-redux/releases",
+    "react-select": "https://github.com/JedWatson/react-select/blob/master/packages/react-select/CHANGELOG.md",
     "jsdiff": "https://github.com/kpdecker/jsdiff/blob/master/release-notes.md",
     "cross-env": "https://github.com/kentcdodds/cross-env/releases",
     "joi": "https://joi.dev/resources/changelog/",
