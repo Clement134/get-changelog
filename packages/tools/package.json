@@ -1,7 +1,7 @@
 {
     "name": "tools",
     "private": true,
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -11,6 +11,9 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "chart.js": "^2.9.4",
+        "chartjs-node-canvas": "^3.0.6",
+        "chartjs-plugin-datalabels": "^0.7.0",
         "get-changelog-lib": "^1.5.0",
         "got": "^11.8.0"
     }
