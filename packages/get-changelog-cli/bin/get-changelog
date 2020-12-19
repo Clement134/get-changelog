@@ -11,6 +11,7 @@ program
     .option('-r, --reporter <reporterName>', 'reporter to use (console, console-jira)')
     .option('-o, --open', 'open changelog url with the default browser (only usable with -m)')
     .option('--cache', 'use cache to improve performances')
+    .option('--txt', 'try to found changelog with txt extension')
     .option(
         '-f, --filter <matches>',
         '(ncu option) include only package names matching the given string, comma-or-space-delimited list, or /regex/'

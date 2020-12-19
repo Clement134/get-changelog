@@ -9,8 +9,9 @@ class ChangelogFinder {
     /**
      * @constructor
      * @param {Object} configuration custom configuration
-     * @param {Cache} [cache] optional cache object
      * @param {Object.<string, string>} configuration.customRepositories mapping between custom repositories identifier and source path
+     * @param {Boolean} configuration.exploreTxtFiles explore files with txt extension
+     * @param {Cache} [cache] optional cache object
      */
     constructor(configuration, cache) {
         this.configuration = configuration || {};
@@ -109,7 +110,9 @@ class ChangelogFinder {
         }
         branch = branch || 'master';
 
-        const extensions = ['md', 'txt'];
+        const extensions = ['md'];
+        if (this.configuration.exploreTxtFiles) extensions.push('txt');
+
         const names = ['CHANGELOG', 'changelog', 'ChangeLog', 'History', 'HISTORY', 'CHANGES'];
         const possibleLocations = [];
         extensions.forEach((extension) => {

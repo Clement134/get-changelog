@@ -52,6 +52,7 @@ class Runner {
     async run() {
         const configuration = await this._parseConfiguration();
         configuration.cache = Boolean(this.options.cache);
+        configuration.exploreTxtFiles = Boolean(this.options.txt);
 
         let cache;
         if (configuration.cache) {

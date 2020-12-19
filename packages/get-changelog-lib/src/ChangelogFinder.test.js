@@ -163,6 +163,34 @@ test('returns History.md url', async () => {
     expect(await changelogFinder.getChangelog('module-name')).toBe('https://github.com/User/module-name/blob/master/History.md');
 });
 
+test('returns CHANGELOG.txt url (if --txt option set)', async () => {
+    registryUrl.mockReturnValue('https://registry.npmjs.org/');
+    got.head = jest.fn().mockImplementation((url) => {
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/changelog.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/History.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.txt') return { statusCode: 200 };
+    });
+    got.mockImplementation(() => ({
+        json: jest.fn().mockResolvedValue({
+            'dist-tags': {
+                latest: '1.0.0',
+            },
+            versions: {
+                '1.0.0': {
+                    repository: {
+                        type: 'git',
+                        url: 'git+https://github.com/User/module-name.git',
+                    },
+                },
+            },
+        }),
+    }));
+    const changelogFinder = new ChangelogFinder({ exploreTxtFiles: true });
+    expect(await changelogFinder.getChangelog('module-name')).toBe('https://github.com/User/module-name/blob/master/CHANGELOG.txt');
+});
+
 test('return null when release is not changelog (if token provided)', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.head = jest.fn().mockImplementation((url) => {
@@ -172,12 +200,6 @@ test('return null when release is not changelog (if token provided)', async () =
         if (url === 'https://github.com/User/module-name/blob/master/History.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/HISTORY.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/CHANGES.md') throw new ErrorHttp(500);
-        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/changelog.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/History.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/HISTORY.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/CHANGES.txt') throw new ErrorHttp(500);
     });
     got.mockImplementation(() => ({
         json: jest.fn().mockResolvedValue({
@@ -212,12 +234,6 @@ test('returns github releases', async () => {
         if (url === 'https://github.com/User/module-name/blob/master/History.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/HISTORY.md') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/CHANGES.md') throw new ErrorHttp(500);
-        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/changelog.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/History.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/HISTORY.txt') throw new ErrorHttp(404);
-        if (url === 'https://github.com/User/module-name/blob/master/CHANGES.txt') throw new ErrorHttp(500);
     });
     got.mockImplementation(() => ({
         json: jest.fn().mockResolvedValue({
