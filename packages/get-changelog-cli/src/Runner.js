@@ -66,8 +66,16 @@ class Runner {
             const spinner = ora(spinnerConfig).start('searching changelog');
             const changelog = await changelogFinder.getChangelog(moduleName);
             spinner.stop();
-            console.log(changelog || 'https://github.com/Clement134/get-changelog/issues/new/choose');
-            if (open) await openUrl(changelog);
+
+            if (changelog) {
+                console.log(changelog);
+                if (open) await openUrl(changelog);
+            } else {
+                console.log(
+                    'Changelog not found\nyou can report this issue with this link:',
+                    'https://github.com/Clement134/get-changelog/issues/new?template=bad_url.md'
+                );
+            }
         }
 
         if (check && !moduleName) {

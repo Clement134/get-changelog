@@ -1,4 +1,5 @@
 const terminalLink = require('terminal-link');
+const Table = require('cli-table');
 
 const COLORS = {
     reset: '\x1b[0m',
@@ -6,6 +7,12 @@ const COLORS = {
     major: '\x1b[31m',
     minor: '\x1b[33m',
     patch: '\x1b[0m',
+};
+
+const TYPES = {
+    major: 3,
+    minor: 2,
+    patch: 1,
 };
 
 /**
@@ -23,17 +30,25 @@ function buildReport(data) {
         return true;
     }
 
-    console.log('CHANGELOGS:');
-    data.forEach(({ name, from, to, changelog, upgradeType, dependencyType }) => {
+    const table = new Table({
+        head: [`${COLORS.reset}Package${COLORS.reset}`, `${COLORS.reset}Changelog`],
+    });
+
+    data.sort((packageA, packageB) => {
+        if (packageA.dependencyType === packageB.dependencyType) return TYPES[packageB.upgradeType] - TYPES[packageA.upgradeType];
+        if (packageA.dependencyType === 'devDependencies') return 1;
+        return -1;
+    }).forEach(({ name, from, to, changelog, upgradeType, dependencyType }) => {
         const changelogLink = terminalLink('Changelog', changelog, {
             fallback: () => changelog,
         });
         const rangeColor = COLORS[upgradeType];
         const versionString = `${rangeColor}${from} > ${to}${COLORS.reset}`;
         const typeDescription = dependencyType === 'devDependencies' ? '\x1b[34m[dev]\x1b[0m ' : '';
-        console.log(`- ${typeDescription}${name} (${versionString}): ${changelogLink || '?'}`);
+        table.push([`${typeDescription}${name} (${versionString})`, `${changelogLink || '?'}`]);
     });
 
+    console.log(table.toString());
     console.log(
         `\n💡${COLORS.bright} Pro tips${COLORS.reset}:`,
         "If some changelog url aren't accurate, you can fill an issue in the repository:",

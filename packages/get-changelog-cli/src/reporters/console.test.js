@@ -1,7 +1,9 @@
 const terminalLink = require('terminal-link');
+const Table = require('cli-table');
 const { buildReport } = require('./console');
 
 jest.mock('terminal-link');
+jest.mock('cli-table');
 
 test('write error to console', async () => {
     const errorSpy = jest.spyOn(global.console, 'error');
@@ -18,13 +20,15 @@ test('write data to console (no module to upgrade)', async () => {
 });
 
 test('write data to console', async () => {
+    const tablePushSpy = jest.fn();
+    Table.mockImplementation(() => ({
+        push: tablePushSpy,
+    }));
     const errorSpy = jest.spyOn(global.console, 'error');
-    const logSpy = jest.spyOn(global.console, 'log');
     terminalLink.mockReturnValueOnce('[link]http://module1.com').mockReturnValueOnce(null).mockReturnValueOnce('[link]http://module3.com');
 
     buildReport([
         { name: 'module1', from: '0.0.1', to: '1.0.0', changelog: 'http://module1.com', upgradeType: 'major' },
-        { name: 'module2', from: '0.0.1', to: '0.1.0', upgradeType: 'minor' },
         {
             name: 'module3',
             from: '0.0.1',
@@ -33,22 +37,24 @@ test('write data to console', async () => {
             upgradeType: 'patch',
             dependencyType: 'devDependencies',
         },
+        { name: 'module2', from: '0.0.1', to: '0.1.0', upgradeType: 'minor' },
     ]);
     expect(errorSpy).not.toBeCalled();
-    expect(logSpy).nthCalledWith(1, 'CHANGELOGS:');
-    expect(logSpy).nthCalledWith(2, '- module1 (\x1b[31m0.0.1 > 1.0.0\x1b[0m): [link]http://module1.com');
-    expect(logSpy).nthCalledWith(3, '- module2 (\x1b[33m0.0.1 > 0.1.0\x1b[0m): ?');
-    expect(logSpy).nthCalledWith(4, '- \x1b[34m[dev]\x1b[0m module3 (\x1b[0m0.0.1 > 0.0.2\x1b[0m): [link]http://module3.com');
+    expect(tablePushSpy).nthCalledWith(1, ['module1 (\x1b[31m0.0.1 > 1.0.0\x1b[0m)', '[link]http://module1.com']);
+    expect(tablePushSpy).nthCalledWith(2, ['module2 (\x1b[33m0.0.1 > 0.1.0\x1b[0m)', '?']);
+    expect(tablePushSpy).nthCalledWith(3, ['\x1b[34m[dev]\x1b[0m module3 (\x1b[0m0.0.1 > 0.0.2\x1b[0m)', '[link]http://module3.com']);
 });
 
 test('write data to console (with link fallback)', async () => {
+    const tablePushSpy = jest.fn();
+    Table.mockImplementation(() => ({
+        push: tablePushSpy,
+    }));
     const errorSpy = jest.spyOn(global.console, 'error');
-    const logSpy = jest.spyOn(global.console, 'log');
     terminalLink.mockImplementation((arg1, arg2, options) => options.fallback());
 
     buildReport([
         { name: 'module1', from: '0.0.1', to: '1.0.0', changelog: 'http://module1.com', upgradeType: 'major' },
-        { name: 'module2', from: '0.0.1', to: '0.1.0', upgradeType: 'minor' },
         {
             name: 'module3',
             from: '0.0.1',
@@ -57,10 +63,10 @@ test('write data to console (with link fallback)', async () => {
             upgradeType: 'patch',
             dependencyType: 'devDependencies',
         },
+        { name: 'module2', from: '0.0.1', to: '0.1.0', upgradeType: 'minor' },
     ]);
     expect(errorSpy).not.toBeCalled();
-    expect(logSpy).nthCalledWith(1, 'CHANGELOGS:');
-    expect(logSpy).nthCalledWith(2, '- module1 (\x1b[31m0.0.1 > 1.0.0\x1b[0m): http://module1.com');
-    expect(logSpy).nthCalledWith(3, '- module2 (\x1b[33m0.0.1 > 0.1.0\x1b[0m): ?');
-    expect(logSpy).nthCalledWith(4, '- \x1b[34m[dev]\x1b[0m module3 (\x1b[0m0.0.1 > 0.0.2\x1b[0m): http://module3.com');
+    expect(tablePushSpy).nthCalledWith(1, ['module1 (\x1b[31m0.0.1 > 1.0.0\x1b[0m)', 'http://module1.com']);
+    expect(tablePushSpy).nthCalledWith(2, ['module2 (\x1b[33m0.0.1 > 0.1.0\x1b[0m)', '?']);
+    expect(tablePushSpy).nthCalledWith(3, ['\x1b[34m[dev]\x1b[0m module3 (\x1b[0m0.0.1 > 0.0.2\x1b[0m)', 'http://module3.com']);
 });
