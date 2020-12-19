@@ -18,7 +18,7 @@ const canvasRenderService = new CanvasRenderService(width, height, undefined, un
     return Chart;
 });
 
-function renderChart(data, path, { title, colorMapping }) {
+function renderChart(data, chartPath, { title, colorMapping }) {
     const configuration = {
         type: 'doughnut',
         data: {
@@ -51,7 +51,7 @@ function renderChart(data, path, { title, colorMapping }) {
             },
         },
     };
-    canvasRenderService.renderToStream(configuration).pipe(createWriteStream(path));
+    canvasRenderService.renderToStream(configuration).pipe(createWriteStream(chartPath));
 }
 
 (async () => {

@@ -11,7 +11,9 @@ async function* getData(wantedItems) {
     let size = Math.min(wantedItems, MAX_SIZE);
     let index = 0;
     while (index < wantedItems) {
-        const SEARCH_URL = `http://registry.npmjs.org/-/v1/search?text=boost-exact:true&popularity=1.0&quality=0.0&maintenance=0.0&size=${size}&from=${index + 1}`;
+        const SEARCH_URL = `http://registry.npmjs.org/-/v1/search?text=boost-exact:true&popularity=1.0&quality=0.0&maintenance=0.0&size=${size}&from=${
+            index + 1
+        }`;
         console.log(SEARCH_URL);
         const { objects = [] } = await got.get(SEARCH_URL).json();
         yield* objects;
