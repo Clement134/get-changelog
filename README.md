@@ -8,6 +8,7 @@
 | ------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
 | [get-changelog-cli](./packages/get-changelog-cli) | CLI tool to find changelogs    | [![version](https://img.shields.io/npm/v/get-changelog-cli?style=flat-square)](https://www.npmjs.com/package/get-changelog-cli)  |
 | [get-changelog-lib](./packages/get-changelog-lib) | Library to get changelogs urls | [![version](https://img.shields.io/npm/v/get-changelog-lib?style=flat-square) ](https://www.npmjs.com/package/get-changelog-lib) |
+| [tools](./packages/tools) | Changelog analysis tools | 0.0.1 |
 
 ## Stargazers
 
