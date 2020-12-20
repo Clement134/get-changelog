@@ -2,7 +2,7 @@
 
 > A CLI tool to easily find changelogs
 
-Searching for changelogs before upgrade is often a time consuming task. The purpose of this tool is to simplify this search using common changelog locations.
+Searching for changelogs before upgrade is often a time-consuming task. The purpose of this tool is to simplify this search using common changelog locations.
 
 ## How it works
 
@@ -26,6 +26,7 @@ Options:
   -r, --reporter <reporterName>  reporter to use (console, console-jira)
   -o, --open                     open changelog url with the default browser (only usable with -m)
   --cache                        use cache to improve performances
+  --txt                          try to found changelog with txt extension
   -f, --filter <matches>         (ncu option) include only package names matching the given string, comma-or-space-delimited list, or /regex/
   -x, --reject <matches>         (ncu option) exclude packages matching the given string, comma-or-space-delimited list, or /regex/
   -g, --global                   (ncu option) check global packages instead of in the current project
@@ -65,7 +66,11 @@ The following reporters are implemented:
 
 #### GitHub token
 
-Github API is used to fetch the default branch of each repository, this API is limited to 60 requests per hours. In order to increase this rate limit it's possible to add a github token (without specific permissions) in the `CHANGELOGFINDER_GITHUB_AUTH_TOKEN` environment variable.
+Github API is used to fetch the default branch and verify releases of each repository, this API is limited to 60 requests per hours. In order to increase this rate limit it's possible to add a github token (without specific permissions) in the `CHANGELOGFINDER_GITHUB_AUTH_TOKEN` environment variable.
+
+The procedure to generate this token is described on the [github documentation](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token#creating-a-token).
+
+This tool could be a little less accurate (but more performant) without this token. As no default branch or release verification are performed.
 
 ## API usage
 
