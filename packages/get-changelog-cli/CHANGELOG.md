@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.0
+
+### Feature
+
+-   **BREAKING CHANGE**: add option `—txt` to explore txt files (no more the default)
+-   **BREAKING CHANGE**: refactor github calls (no default branch detection and release analysis without github token)
+-   Improve accuracy for npm most popular packages (top 1000)
+-   Add support for gitlab
+-   Use head request to improve performances
+
+### Chore
+
+-   Upgrade dependencies
+
 ## 1.6.0
 
 ### Feature
