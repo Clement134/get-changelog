@@ -76,7 +76,6 @@ class ChangelogFinder {
             if (statusCode === 200) return filePath;
             return null;
         } catch (error) {
-            console.log(error);
             if (error.response && error.response.statusCode !== 404) {
                 console.log(error);
             }
