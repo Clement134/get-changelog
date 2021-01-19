@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1
+
+### Fix
+
+-   Remove additonal `console.log` (#71)
+
 ## 2.0.0
 
 ### Feature
