@@ -1,6 +1,6 @@
 {
     "name": "get-changelog-lib",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Library to easily get changelogs",
     "main": "src/ChangelogFinder.js",
     "repository": {
