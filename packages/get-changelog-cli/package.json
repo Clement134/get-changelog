@@ -26,7 +26,7 @@
     "license": "MIT",
     "dependencies": {
         "cli-table": "^0.3.4",
-        "commander": "^6.0.0",
+        "commander": "^7.0.0",
         "get-changelog-lib": "^2.0.1",
         "npm-check-updates": "^10.0.0",
         "open": "^7.2.0",
