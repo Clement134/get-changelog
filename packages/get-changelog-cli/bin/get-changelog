@@ -25,6 +25,7 @@ program
 program.parse(process.argv);
 
 (async () => {
-    const runner = new Runner(program);
+    const options = program.opts();
+    const runner = new Runner(options);
     await runner.run();
 })();
