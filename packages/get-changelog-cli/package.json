@@ -32,6 +32,6 @@
         "open": "^8.0.2",
         "ora": "^5.0.0",
         "semver": "^7.3.2",
-        "terminal-link": "^2.1.1"
+        "terminal-link": "^3.0.0"
     }
 }
