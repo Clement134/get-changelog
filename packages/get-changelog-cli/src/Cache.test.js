@@ -1,5 +1,5 @@
 const fs = require('fs').promises;
-const Cache = require('./Cache.js');
+const Cache = require('./Cache');
 
 test('log warning (no cache file)', async () => {
     const logSpy = jest.spyOn(global.console, 'log');

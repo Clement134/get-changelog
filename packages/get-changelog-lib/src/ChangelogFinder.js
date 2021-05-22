@@ -3,7 +3,7 @@ const registryUrl = require('registry-url');
 const url = require('url');
 
 const GithubAPI = require('./GithubAPI');
-const specificChangelogLocations = require('../data/changelogs');
+const specificChangelogLocations = require('../data/changelogs.json');
 
 class ChangelogFinder {
     /**
