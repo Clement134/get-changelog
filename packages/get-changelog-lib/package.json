@@ -2,7 +2,8 @@
     "name": "get-changelog-lib",
     "version": "2.1.0",
     "description": "Library to easily get changelogs",
-    "main": "src/ChangelogFinder.js",
+    "type": "module",
+    "export": "./src/ChangelogFinder.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Clement134/get-changelog.git"
@@ -16,12 +17,15 @@
         "version"
     ],
     "engines": {
-        "node": ">= 10.0.0"
+        "node": ">= 12.22.0"
     },
     "author": "Clement134",
     "license": "MIT",
     "dependencies": {
         "got": "^11.5.2",
         "registry-url": "^5.1.0"
+    },
+    "devDependencies": {
+        "@jest/globals": "^26.6.2"
     }
 }

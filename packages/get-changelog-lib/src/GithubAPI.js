@@ -1,6 +1,6 @@
-const got = require('got');
+import got from 'got';
 
-class GithubAPI {
+export default class GithubAPI {
     /**
      * @constructor
      * @param {String} repositoryUrl
@@ -62,5 +62,3 @@ class GithubAPI {
         return isReleaseChangelog;
     }
 }
-
-module.exports = GithubAPI;
