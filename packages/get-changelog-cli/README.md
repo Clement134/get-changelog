@@ -60,10 +60,10 @@ Version checking can be configured using [npm-check-updates](https://github.com/
 It's possible to choose the reporter used with the `-r` option.
 The following reporters are implemented:
 
-| Name           | Description                                           |
-| -------------- | ----------------------------------------------------- |
-| `console`      | (default reporter) print packages data in the console |
-| `console-jira` | print packages data in jira markup                    |
+| Name          | Description                                           |
+| ------------- | ----------------------------------------------------- |
+| `console`     | (default reporter) print packages data in the console |
+| `consoleJira` | print packages data in jira markup                    |
 
 #### Additional branch check
 

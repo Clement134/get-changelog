@@ -1,12 +1,12 @@
-const fs = require('fs').promises;
-const ora = require('ora');
-const ncu = require('npm-check-updates');
-const semver = require('semver');
-const openUrl = require('open');
-const ChangelogFinder = require('get-changelog-lib');
+import fs from 'fs/promises';
+import ora from 'ora';
+import ncu from 'npm-check-updates';
+import semver from 'semver';
+import openUrl from 'open';
+import ChangelogFinder from 'get-changelog-lib';
 
-const Cache = require('./Cache');
-const reporters = require('./reporters');
+import Cache from './Cache';
+import reporters, { console } from './reporters';
 
 const spinnerConfig = { spinner: 'simpleDots' };
 const VERSION_DATA_EXTRACTOR = /(?:npm:(.+)@)?(.*)/;
@@ -29,7 +29,7 @@ function extractVersionData(range) {
     };
 }
 
-class Runner {
+export default class Runner {
     /**
      * @constructor
      * @param {Object} options run options
@@ -147,7 +147,7 @@ class Runner {
 
             spinner.stop();
             // format output
-            const reporter = reporters[this.options.reporter] || reporters.console;
+            const reporter = reporters[this.options.reporter] || console;
             reporter.buildReport(data);
         }
 
@@ -155,5 +155,3 @@ class Runner {
         return 0;
     }
 }
-
-module.exports = Runner;

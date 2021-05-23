@@ -2,6 +2,7 @@
     "name": "get-changelog-cli",
     "version": "2.1.0",
     "description": "CLI tool to easily get changelogs",
+    "type": "module",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Clement134/get-changelog.git"
@@ -20,7 +21,7 @@
         "get-changelog": "./bin/get-changelog"
     },
     "engines": {
-        "node": ">= 10.0.0"
+        "node": ">= 12.22.0"
     },
     "author": "Clement134",
     "license": "MIT",
@@ -33,5 +34,8 @@
         "ora": "^5.0.0",
         "semver": "^7.3.2",
         "terminal-link": "^2.1.1"
+    },
+    "devDependencies": {
+        "@jest/globals": "^26.6.2"
     }
 }

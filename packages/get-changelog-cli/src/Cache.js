@@ -1,8 +1,11 @@
-const fs = require('fs').promises;
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CACHE_FILE_LOCATION = `${__dirname}/../cache.json`;
 
-class Cache {
+export default class Cache {
     /**
      * @constructor
      * @param {Object} [options] optional options
@@ -53,5 +56,3 @@ class Cache {
         this.data[key] = value;
     }
 }
-
-module.exports = Cache;
