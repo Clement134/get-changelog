@@ -1,11 +1,14 @@
-const got = require('got');
-const registryUrl = require('registry-url');
-const url = require('url');
+import url from 'url';
+import fs from 'fs';
 
-const GithubAPI = require('./GithubAPI');
-const specificChangelogLocations = require('../data/changelogs.json');
+import got from 'got';
+import registryUrl from 'registry-url';
 
-class ChangelogFinder {
+import GithubAPI from './GithubAPI';
+
+const specificChangelogLocations = JSON.parse(fs.readFileSync('../data/changelogs.json', 'utf8'));
+
+export default class ChangelogFinder {
     /**
      * @constructor
      * @param {Object} configuration custom configuration
@@ -22,7 +25,7 @@ class ChangelogFinder {
      * Get package repository url from registry metadata
      * @private
      * @param {String} moduleName npm module name
-     * @param {String} [moduleVersion] opional package version
+     * @param {String} [moduleVersion] optional package version
      * @returns {Promise<String>} repository url
      */
     async _getRepositoryUrl(moduleName, moduleVersion) {
@@ -143,5 +146,3 @@ class ChangelogFinder {
         return changelogUrl;
     }
 }
-
-module.exports = ChangelogFinder;

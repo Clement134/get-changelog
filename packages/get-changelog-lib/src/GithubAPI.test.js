@@ -1,5 +1,6 @@
-const got = require('got');
-const GithubAPI = require('./GithubAPI');
+import { jest } from '@jest/globals';
+import got from 'got';
+import GithubAPI from './GithubAPI';
 
 jest.mock('got');
 

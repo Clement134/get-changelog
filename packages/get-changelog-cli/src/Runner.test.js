@@ -1,11 +1,12 @@
-const ora = require('ora');
-const ncu = require('npm-check-updates');
-const open = require('open');
-const ChangelogFinder = require('get-changelog-lib');
+import { jest } from '@jest/globals';
+import ora from 'ora';
+import ncu from 'npm-check-updates';
+import open from 'open';
+import ChangelogFinder from 'get-changelog-lib';
 
-const Runner = require('./Runner');
-const Cache = require('./Cache');
-const { buildReport } = require('./reporters/console');
+import Runner from './Runner';
+import Cache from './Cache';
+import buildReport from './reporters/console';
 
 jest.mock('ora');
 jest.mock('npm-check-updates');

@@ -1,4 +1,5 @@
-const { buildReport } = require('./console-jira');
+import { jest } from '@jest/globals';
+import buildReport from './console-jira';
 
 test('write error to console', async () => {
     const errorSpy = jest.spyOn(global.console, 'error');

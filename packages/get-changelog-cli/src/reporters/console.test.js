@@ -1,6 +1,7 @@
-const terminalLink = require('terminal-link');
-const Table = require('cli-table');
-const { buildReport } = require('./console');
+import { jest } from '@jest/globals';
+import terminalLink from 'terminal-link';
+import Table from 'cli-table';
+import buildReport from './console';
 
 jest.mock('terminal-link');
 jest.mock('cli-table');

@@ -1,8 +1,9 @@
 /* eslint-disable consistent-return */
-const registryUrl = require('registry-url');
-const got = require('got');
-const GithubAPI = require('./GithubAPI');
-const ChangelogFinder = require('./ChangelogFinder');
+import { jest } from '@jest/globals';
+import registryUrl from 'registry-url';
+import got from 'got';
+import GithubAPI from './GithubAPI';
+import ChangelogFinder from './ChangelogFinder';
 
 class ErrorHttp extends Error {
     constructor(statusCode) {
