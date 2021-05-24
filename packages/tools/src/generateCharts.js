@@ -12,9 +12,10 @@ const filePath = path.resolve(__dirname, process.argv[2]);
 
 const canvasRenderService = new CanvasRenderService(width, height, undefined, undefined, () => {
     const Chart = require('chart.js');
-    require('chartjs-plugin-datalabels');
+    const ChartDataLabels = require('chartjs-plugin-datalabels');
     delete require.cache[require.resolve('chart.js')];
     delete require.cache[require.resolve('chartjs-plugin-datalabels')];
+    Chart.plugins.register(ChartDataLabels);
     return Chart;
 });
 

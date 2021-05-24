@@ -20,4 +20,4 @@ This command generates a file (in the data directory) with newline separated jso
 
 Generate pie charts representing common changelog location for active/inactive/total collected packages
 
-`node src/generateCharts.js`
+`node src/generateCharts.js [file]`

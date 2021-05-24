@@ -13,7 +13,7 @@
     "dependencies": {
         "chart.js": "^2.9.4",
         "chartjs-node-canvas": "^3.0.6",
-        "chartjs-plugin-datalabels": "^0.7.0",
+        "chartjs-plugin-datalabels": "^1.0.0",
         "get-changelog-lib": "^2.0.1",
         "got": "^11.8.1"
     }
