@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2
+
+### Chore
+
+-   Upgrade dependencies
+
 ## 2.0.1
 
 ### Fix
