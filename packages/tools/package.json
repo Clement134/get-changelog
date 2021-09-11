@@ -1,7 +1,7 @@
 {
     "name": "tools",
     "private": true,
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -14,7 +14,7 @@
         "chart.js": "^2.9.4",
         "chartjs-node-canvas": "^3.0.6",
         "chartjs-plugin-datalabels": "^1.0.0",
-        "get-changelog-lib": "^2.0.1",
+        "get-changelog-lib": "^2.0.2",
         "got": "^11.8.1"
     }
 }
