@@ -30,7 +30,7 @@
         "get-changelog-lib": "^2.0.2",
         "npm-check-updates": "^11.0.2",
         "open": "^8.0.2",
-        "ora": "^5.0.0",
+        "ora": "^6.0.0",
         "semver": "^7.3.2",
         "terminal-link": "^2.1.1"
     }
