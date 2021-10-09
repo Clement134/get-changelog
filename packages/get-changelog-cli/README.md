@@ -25,6 +25,7 @@ Options:
   -m, --module <moduleName>      get changelog for an npm module
   -r, --reporter <reporterName>  reporter to use (console, console-jira)
   -o, --open                     open changelog url with the default browser (only usable with -m)
+  -b, --branches <branches>      comma separated list of additional branches to check (e.g. -b main,test)
   --cache                        use cache to improve performances
   --txt                          try to found changelog with txt extension
   -f, --filter <matches>         (ncu option) include only package names matching the given string, comma-or-space-delimited list, or /regex/
@@ -63,6 +64,10 @@ The following reporters are implemented:
 | -------------- | ----------------------------------------------------- |
 | `console`      | (default reporter) print packages data in the console |
 | `console-jira` | print packages data in jira markup                    |
+
+#### Additional branch check
+
+By default changelog search are only performed on the `master` branch. It is possible to check additional branches (main branch for example) with the `-b` option or to add a GitHub token in order to fetch the default branch from the repository.
 
 #### GitHub token
 

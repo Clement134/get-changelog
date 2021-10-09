@@ -26,6 +26,14 @@ const ChangelogFinder = require('get-changelog-lib');
 
 ## Advanced usage
 
+#### Additional branch check
+
+By default changelog search are only performed on the `master` branch. It is possible to check additional branches (main branch for example) with the `branches` configuration field.
+
+```javascript
+const changeLogFinder = new ChangelogFinder({ branches: ['main'] }); // search changelogs in master and main branches
+```
+
 ### GitHub token
 
 Github API is used to fetch the default branch and verify releases of each repository, this API is limited to 60 requests per hours. In order to increase this rate limit it's possible to add a github token (without specific permissions) in the `CHANGELOGFINDER_GITHUB_AUTH_TOKEN` environment variable.

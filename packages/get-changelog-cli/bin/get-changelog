@@ -10,6 +10,7 @@ program
     .option('-m, --module <moduleName>', 'get changelog for an npm module')
     .option('-r, --reporter <reporterName>', 'reporter to use (console, console-jira)')
     .option('-o, --open', 'open changelog url with the default browser (only usable with -m)')
+    .option('-b, --branches <branches>', 'comma separated list of additional branches to check (e.g. -b main,test)')
     .option('--cache', 'use cache to improve performances')
     .option('--txt', 'try to found changelog with txt extension')
     .option(
