@@ -53,6 +53,7 @@ class Runner {
         const configuration = await this._parseConfiguration();
         configuration.cache = Boolean(this.options.cache);
         configuration.exploreTxtFiles = Boolean(this.options.txt);
+        configuration.branches = this.options.branches ? this.options.branches.split(',') : [];
 
         let cache;
         if (configuration.cache) {

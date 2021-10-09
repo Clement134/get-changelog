@@ -110,7 +110,6 @@ test('use default branch for github (if token provided)', async () => {
 test('use master branch when github api is not available (if token provided)', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.head = jest.fn().mockImplementation((url) => {
-        console.log(url);
         if (url === 'https://www.github.com/User/module-name/blob/master/CHANGELOG.md') return { statusCode: 200 };
     });
     got.mockImplementation(() => ({
@@ -161,6 +160,39 @@ test('returns History.md url', async () => {
     }));
     const changelogFinder = new ChangelogFinder();
     expect(await changelogFinder.getChangelog('module-name')).toBe('https://github.com/User/module-name/blob/master/History.md');
+});
+
+test('returns CHANGELOG.md url in additional branch', async () => {
+    registryUrl.mockReturnValue('https://registry.npmjs.org/');
+    got.head = jest.fn().mockImplementation((url) => {
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/changelog.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/ChangeLog.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/History.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/HISTORY.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/master/CHANGES.md') throw new ErrorHttp(404);
+        if (url === 'https://github.com/User/module-name/blob/main/CHANGELOG.md') return { statusCode: 200 };
+    });
+    got.mockImplementation(() => ({
+        json: jest.fn().mockResolvedValue({
+            'dist-tags': {
+                latest: '1.0.0',
+            },
+            versions: {
+                '1.0.0': {
+                    repository: {
+                        type: 'git',
+                        url: 'git+https://github.com/User/module-name.git',
+                    },
+                },
+            },
+        }),
+    }));
+    GithubAPI.mockImplementation(() => ({
+        isActivated: jest.fn().mockReturnValue(false),
+    }));
+    const changelogFinder = new ChangelogFinder({ branches: ['main'] });
+    expect(await changelogFinder.getChangelog('module-name')).toBe('https://github.com/User/module-name/blob/main/CHANGELOG.md');
 });
 
 test('returns CHANGELOG.txt url (if --txt option set)', async () => {
