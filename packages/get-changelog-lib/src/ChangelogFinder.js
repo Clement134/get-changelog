@@ -48,14 +48,14 @@ class ChangelogFinder {
     }
 
     /**
-     * Send a get request to a possible changelog location
+     * Send an head request to a possible changelog location
      * @private
-     * @param {String} repositoryUrl github repository url
+     * @param {String} repositoryUrl repository url (on github, gitlab or bitbucket)
      * @param {String} file changelog file name
      * @param {String} branch the branch where changelog might exist
      * @returns {Promise<String>} changelog url
      */
-    async _tryChangelogLocation(repositoryUrl, file, branch) {
+    async _tryChangelogLocation(repositoryUrl, file, branch, folder = '') {
         const { customRepositories } = this.configuration;
         let sourcePath = 'blob';
 
@@ -74,7 +74,9 @@ class ChangelogFinder {
             });
         }
 
-        const filePath = `${repositoryUrl}/${sourcePath}/${branch}/${file}`;
+        const filePath = folder
+            ? `${repositoryUrl}/${sourcePath}/${branch}/${folder}/${file}`
+            : `${repositoryUrl}/${sourcePath}/${branch}/${file}`;
         try {
             const { statusCode } = await got.head(filePath, { followRedirect: false });
             if (statusCode === 200) return filePath;
@@ -85,6 +87,60 @@ class ChangelogFinder {
             }
             return null;
         }
+    }
+
+    /**
+     * Check if a repository is a monorepository
+     * @private
+     * @param {String} repositoryUrl repository url (on github, gitlab or bitbucket)
+     * @param {String} branch the branch where changelog might exist
+     * @returns {Promise<Boolean>} boolean indicating if the repository is a mono repository
+     */
+    async _isMonoRepository(repositoryUrl, branch) {
+        const { customRepositories } = this.configuration;
+        let sourcePath = 'tree';
+
+        const { host } = url.parse(repositoryUrl);
+        if (host.includes('bitbucket.org')) {
+            sourcePath = 'src';
+        } else if (host.includes('gitlab.com')) {
+            sourcePath = '-/tree';
+        }
+
+        if (customRepositories) {
+            Object.keys(customRepositories).forEach((repository) => {
+                if (repositoryUrl.includes(repository)) {
+                    sourcePath = customRepositories[repository];
+                }
+            });
+        }
+
+        const filePath = `${repositoryUrl}/${sourcePath}/${branch}/packages`;
+        try {
+            const { statusCode } = await got.head(filePath, { followRedirect: false });
+            if (statusCode === 200) return true;
+        } catch (error) {
+            if (error.response && error.response.statusCode !== 404) {
+                console.log(error);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get mono repository folder name corresponding to some module
+     * @private
+     * @param {String} moduleName name of the npm module
+     * @returns {String} name of the folder corresping to the module in the monorepository
+     */
+    _getMonoRepositoryFolderName(moduleName) {
+        const results = moduleName.match(/@(.+)\/(.+)/);
+        let subModuleName = moduleName;
+        if (results && results.length > 1) {
+            subModuleName = results[2].replace('plugin-', '');
+        }
+
+        return subModuleName;
     }
 
     /**
@@ -116,6 +172,10 @@ class ChangelogFinder {
         let changelog;
         for (let b = 0; b < branches.length; b++) {
             const branch = branches[b];
+
+            const isMonoRepo = await this._isMonoRepository(repositoryUrl, branch);
+            const folder = isMonoRepo ? `packages/${this._getMonoRepositoryFolderName(moduleName)}` : '';
+
             const extensions = ['md'];
             if (this.configuration.exploreTxtFiles) extensions.push('txt');
 
@@ -129,7 +189,7 @@ class ChangelogFinder {
 
             // try all possible location for changelog (with priority)
             for (let i = 0; i < possibleLocations.length; i++) {
-                changelog = await this._tryChangelogLocation(repositoryUrl, possibleLocations[i], branch);
+                changelog = await this._tryChangelogLocation(repositoryUrl, possibleLocations[i], branch, folder);
                 if (changelog) break;
             }
 

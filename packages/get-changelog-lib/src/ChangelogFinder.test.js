@@ -52,6 +52,7 @@ test('returns specific changelog url', async () => {
 test('returns CHANGELOG.md url', async () => {
     registryUrl.mockReturnValue('https://registry.npmjs.org/');
     got.head = jest.fn().mockImplementation((url) => {
+        if (url === 'https://github.com/User/module-name/tree/master/packages') throw new ErrorHttp(404);
         if (url === 'https://github.com/User/module-name/blob/master/CHANGELOG.md') return { statusCode: 200 };
     });
     got.mockImplementation(() => ({
@@ -366,4 +367,40 @@ test('returns changelog on custom repository', async () => {
         },
     });
     expect(await changelogFinder.getChangelog('module-name')).toBe('https://private-repo2.com/User/module-name/browse/master/CHANGELOG.md');
+});
+
+test('returns CHANGELOG.md url in mono repository', async () => {
+    registryUrl.mockReturnValue('https://registry.npmjs.org/');
+    got.head = jest.fn().mockImplementation((url) => {
+        if (url === 'https://github.com/User/module-name/tree/master/packages') return { statusCode: 200 };
+        if (url === 'https://github.com/User/module-name/blob/master/packages/sub-module-name/CHANGELOG.md') return { statusCode: 200 };
+    });
+    got.mockImplementation(() => ({
+        json: jest.fn().mockResolvedValue({
+            'dist-tags': {
+                latest: '1.0.0',
+            },
+            versions: {
+                '1.0.0': {
+                    repository: {
+                        type: 'git',
+                        url: 'git+https://github.com/User/module-name.git',
+                    },
+                },
+            },
+        }),
+    }));
+    const cacheSetSpy = jest.fn();
+    const cacheMock = {
+        get: () => {},
+        set: cacheSetSpy,
+    };
+    const changelogFinder = new ChangelogFinder({}, cacheMock);
+    expect(await changelogFinder.getChangelog('@scope/sub-module-name')).toBe(
+        'https://github.com/User/module-name/blob/master/packages/sub-module-name/CHANGELOG.md'
+    );
+    expect(cacheSetSpy).toBeCalledWith(
+        '@scope/sub-module-name',
+        'https://github.com/User/module-name/blob/master/packages/sub-module-name/CHANGELOG.md'
+    );
 });
