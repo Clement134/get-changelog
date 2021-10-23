@@ -13,7 +13,7 @@
     "scripts": {
         "lint": "eslint .",
         "pretest": "npm run lint",
-        "test": "jest",
+        "test": "jest --silent",
         "prepare": "husky install",
         "pre-commit": "pretty-quick --staged"
     },
