@@ -108,6 +108,40 @@ test('[check] print changelogs (without cache)', async () => {
     expect(writeSpy).not.toBeCalled();
 });
 
+test('[check] print changelogs (using npm aliases)', async () => {
+    ncu.run = jest.fn().mockResolvedValue({ moduleWithoutAlias: '^1.0.0', moduleWithAlias: 'npm:moduleWithoutAlias@^1.0.0' });
+    const getChangelogStub = jest.fn().mockResolvedValue('http://changelog.com');
+    ChangelogFinder.mockImplementation(() => ({
+        getChangelog: getChangelogStub,
+    }));
+    const writeSpy = jest.fn();
+    Cache.mockImplementation(() => ({
+        write: writeSpy,
+    }));
+    const runner = new Runner({ check: true, packageFileOption: './mocks/with-aliases/package.json' });
+    await runner.run();
+    expect(getChangelogStub).toBeCalledWith('moduleWithoutAlias', '1.0.0');
+    expect(buildReport).toBeCalledWith([
+        {
+            changelog: 'http://changelog.com',
+            dependencyType: 'dependencies',
+            from: '0.0.1',
+            name: 'moduleWithoutAlias',
+            to: '1.0.0',
+            upgradeType: 'major',
+        },
+        {
+            changelog: 'http://changelog.com',
+            dependencyType: 'dependencies',
+            from: '0.0.2',
+            name: 'moduleWithAlias',
+            to: '1.0.0',
+            upgradeType: 'major',
+        },
+    ]);
+    expect(writeSpy).not.toBeCalled();
+});
+
 test('[check] print changelogs (with cache)', async () => {
     ncu.run = jest.fn().mockResolvedValue({ module: '^1.0.0' });
     const getChangelogStub = jest.fn().mockResolvedValue('http://changelog.com');

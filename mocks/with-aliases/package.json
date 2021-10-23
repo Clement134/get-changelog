@@ -1,0 +1,7 @@
+{
+    "name": "moduleName",
+    "dependencies": {
+        "moduleWithoutAlias": "^0.0.1",
+        "moduleWithAlias": "npm:moduleWithoutAlias@^0.0.2"
+    }
+}

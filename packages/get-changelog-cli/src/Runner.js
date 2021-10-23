@@ -9,14 +9,24 @@ const Cache = require('./Cache');
 const reporters = require('./reporters');
 
 const spinnerConfig = { spinner: 'simpleDots' };
+const VERSION_DATA_EXTRACTOR = /(?:npm:(.+)@)?(.*)/;
 
 /**
- * Transform semver range to semver version
- * @param {String} semverRange semver range (ex: ^1.3.2)
- * @returns {String} semver version (ex: 1.3.2)
+ * @typedef {Object} VersionData
+ * @property {String} [name] module name
+ * @property {String} version semver version (ex 1.3.2)
  */
-function rangeToVersion(semverRange) {
-    return semverRange.replace('^', '').replace('~', '');
+/**
+ * Transform semver range to semver version
+ * @param {String} range package range (ex: ^1.3.2, npm:bootstrap@^5.1.3)
+ * @returns {VersionData} version data
+ */
+function extractVersionData(range) {
+    const [, name, semverRangeWithoutAlias] = range.match(VERSION_DATA_EXTRACTOR);
+    return {
+        name,
+        version: semverRangeWithoutAlias.replace('^', '').replace('~', ''),
+    };
 }
 
 class Runner {
@@ -95,7 +105,6 @@ class Runner {
 
             // get dependencies to upgrade
             const modulesToUpgrade = (await ncu.run(ncuOptions)) || {};
-
             // get current versions
             const packageFilePath = packageFileOption || `${process.cwd()}/package.json`;
             const packageFile = await fs.readFile(packageFilePath);
@@ -113,11 +122,17 @@ class Runner {
             // find changelogs
             const spinner = ora(spinnerConfig).start('searching changelogs');
             const changelogResolvers = Object.keys(modulesToUpgrade).map((dependencyName) => {
-                const currentVersion = rangeToVersion(allDependencies[dependencyName]);
-                const newVersion = rangeToVersion(modulesToUpgrade[dependencyName]);
+                const currentVersionData = extractVersionData(allDependencies[dependencyName]);
+                const currentVersion = currentVersionData.version;
+                const newVersionData = extractVersionData(modulesToUpgrade[dependencyName]);
+                const newVersion = newVersionData.version;
+
+                // use module name from version for npm aliases
+                const currentModuleName = currentVersionData.name ? currentVersionData.name : dependencyName;
                 const dependencyType = dependencies[dependencyName] ? 'dependencies' : 'devDependencies';
+
                 return new Promise((resolve) => {
-                    changelogFinder.getChangelog(dependencyName, newVersion).then((changelog) => {
+                    changelogFinder.getChangelog(currentModuleName, newVersion).then((changelog) => {
                         const data = { name: dependencyName, changelog, dependencyType };
                         if (currentVersion) data.from = currentVersion;
                         if (newVersion) data.to = newVersion;
