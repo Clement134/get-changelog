@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.0
+
+### Fix
+
+-   Find changelog files for dependencies described with npm aliases
+
+### Feature
+
+-   Add `-b` option to search changelog files in additional branches
+
+### Chore
+
+-   Upgrade dependencies
+
 ## 2.0.2
 
 ### Chore

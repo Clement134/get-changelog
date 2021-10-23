@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.1.0
+
+### Features
+
+-   Add `branches` configuration to search changelog files in additional branches
+-   Search for changelog files in mono repository
+
+### Chore
+
+-   Upgrade dependencies
+
 ## 2.0.2
 
 ### Chore
