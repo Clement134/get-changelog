@@ -70,3 +70,32 @@ test('write data to console (with link fallback)', async () => {
     expect(tablePushSpy).nthCalledWith(2, ['module2 (\x1b[33m0.0.1 > 0.1.0\x1b[0m)', '?']);
     expect(tablePushSpy).nthCalledWith(3, ['\x1b[34m[dev]\x1b[0m module3 (\x1b[0m0.0.1 > 0.0.2\x1b[0m)', 'http://module3.com']);
 });
+
+test('write data to console (with url display)', async () => {
+    const tablePushSpy = jest.fn();
+    Table.mockImplementation(() => ({
+        push: tablePushSpy,
+    }));
+    const errorSpy = jest.spyOn(global.console, 'error');
+
+    buildReport(
+        [
+            { name: 'module1', from: '0.0.1', to: '1.0.0', changelog: 'http://module1.com', upgradeType: 'major' },
+            {
+                name: 'module3',
+                from: '0.0.1',
+                to: '0.0.2',
+                changelog: 'http://module3.com',
+                upgradeType: 'patch',
+                dependencyType: 'devDependencies',
+            },
+            { name: 'module2', from: '0.0.1', to: '0.1.0', upgradeType: 'minor' },
+        ],
+        { url: true }
+    );
+    expect(errorSpy).not.toBeCalled();
+    expect(terminalLink).not.toBeCalled();
+    expect(tablePushSpy).nthCalledWith(1, ['module1 (\x1b[31m0.0.1 > 1.0.0\x1b[0m)', 'http://module1.com']);
+    expect(tablePushSpy).nthCalledWith(2, ['module2 (\x1b[33m0.0.1 > 0.1.0\x1b[0m)', '?']);
+    expect(tablePushSpy).nthCalledWith(3, ['\x1b[34m[dev]\x1b[0m module3 (\x1b[0m0.0.1 > 0.0.2\x1b[0m)', 'http://module3.com']);
+});
