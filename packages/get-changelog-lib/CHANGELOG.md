@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0
+
+### Chore
+
+-   **BREAKING CHANGE**: drop support for node 10.x
+-   Upgrade dependencies
+
 ## 2.1.0
 
 ### Features

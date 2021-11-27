@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.0
+
+### Chore
+
+-   **BREAKING CHANGE**: drop support for node 10.x
+-   Upgrade dependencies
+
+### Feature
+
+-   Add `-u` option to force display of full url instead of hyperlinks with console reporter
+-   Add package name in hyperlinks with console reporter
+
 ## 2.1.0
 
 ### Fix
