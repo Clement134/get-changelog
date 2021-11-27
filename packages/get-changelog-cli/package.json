@@ -1,6 +1,6 @@
 {
     "name": "get-changelog-cli",
-    "version": "2.1.0",
+    "version": "3.0.0",
     "description": "CLI tool to easily get changelogs",
     "repository": {
         "type": "git",
@@ -27,7 +27,7 @@
     "dependencies": {
         "cli-table": "^0.3.4",
         "commander": "^8.1.0",
-        "get-changelog-lib": "^2.1.0",
+        "get-changelog-lib": "^3.0.0",
         "npm-check-updates": "^12.0.0",
         "open": "^8.0.2",
         "ora": "^5.0.0",
