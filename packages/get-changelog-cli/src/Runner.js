@@ -148,7 +148,7 @@ class Runner {
             spinner.stop();
             // format output
             const reporter = reporters[this.options.reporter] || reporters.console;
-            reporter.buildReport(data);
+            reporter.buildReport(data, this.options);
         }
 
         if (configuration.cache) cache.write();

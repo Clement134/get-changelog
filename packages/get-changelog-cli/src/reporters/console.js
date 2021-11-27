@@ -18,9 +18,10 @@ const TYPES = {
 /**
  * Format data to make report
  * @param {Object} data report data
+ * @param {Object} options optional option object
  * @returns {boolean} report written
  */
-function buildReport(data) {
+function buildReport(data, options = {}) {
     if (!data) {
         console.error('Unable to write report');
         return false;
@@ -39,9 +40,11 @@ function buildReport(data) {
         if (packageA.dependencyType === 'devDependencies') return 1;
         return -1;
     }).forEach(({ name, from, to, changelog, upgradeType, dependencyType }) => {
-        const changelogLink = terminalLink('Changelog', changelog, {
-            fallback: () => changelog,
-        });
+        const changelogLink = options.url
+            ? changelog
+            : terminalLink(`Changelog ${name}`, changelog, {
+                  fallback: () => changelog,
+              });
         const rangeColor = COLORS[upgradeType];
         const versionString = `${rangeColor}${from} > ${to}${COLORS.reset}`;
         const typeDescription = dependencyType === 'devDependencies' ? '\x1b[34m[dev]\x1b[0m ' : '';

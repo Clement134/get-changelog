@@ -9,6 +9,7 @@ program
     .option('-c, --check', 'check package.json upgrades using npm-check-updates')
     .option('-m, --module <moduleName>', 'get changelog for an npm module')
     .option('-r, --reporter <reporterName>', 'reporter to use (console, console-jira)')
+    .option('-u, --url', 'force url rendering instead of hyperlink for console reporter')
     .option('-o, --open', 'open changelog url with the default browser (only usable with -m)')
     .option('-b, --branches <branches>', 'comma separated list of additional branches to check (e.g. -b main,test)')
     .option('--cache', 'use cache to improve performances')
