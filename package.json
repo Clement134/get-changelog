@@ -23,7 +23,7 @@
     "author": "Clement134",
     "license": "MIT",
     "devDependencies": {
-        "eslint": "^7.16.0",
+        "eslint": "^8.3.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-prettier": "^8.1.0",
         "eslint-plugin-import": "^2.22.0",
