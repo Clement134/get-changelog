@@ -15,6 +15,6 @@
         "chartjs-node-canvas": "^3.0.6",
         "chartjs-plugin-datalabels": "^1.0.0",
         "get-changelog-lib": "^3.0.0",
-        "got": "^11.8.1"
+        "got": "^12.3.1"
     }
 }
