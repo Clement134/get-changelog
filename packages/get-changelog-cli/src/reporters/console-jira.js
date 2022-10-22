@@ -24,7 +24,7 @@ function printTableLine({ name, from, to, changelog, upgradeType }) {
  * @param {Object} data report data
  * @returns {boolean} report written
  */
-function buildReport(data) {
+export default function buildReport(data) {
     if (!data) {
         console.error('Unable to write report');
         return false;
@@ -50,7 +50,3 @@ function buildReport(data) {
 
     return true;
 }
-
-module.exports = {
-    buildReport,
-};

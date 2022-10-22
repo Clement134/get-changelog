@@ -2,6 +2,7 @@
     "private": true,
     "name": "get-changelog",
     "description": "Tools to easily get changelogs",
+    "type": "module",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Clement134/get-changelog.git"
@@ -18,7 +19,11 @@
         "pre-commit": "pretty-quick --staged"
     },
     "engines": {
+<<<<<<< HEAD
         "node": ">= 14.0.0"
+=======
+        "node": ">= 12.22.0"
+>>>>>>> ecmascript-modules
     },
     "author": "Clement134",
     "license": "MIT",

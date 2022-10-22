@@ -1,7 +1,4 @@
-const console = require('./console');
-const consoleJira = require('./console-jira');
+import console from './console';
+import consoleJira from './console-jira';
 
-module.exports = {
-    console,
-    'console-jira': consoleJira,
-};
+export { console, consoleJira };

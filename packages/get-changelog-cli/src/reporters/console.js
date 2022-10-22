@@ -1,5 +1,5 @@
-const terminalLink = require('terminal-link');
-const Table = require('cli-table');
+import terminalLink from 'terminal-link';
+import Table from 'cli-table';
 
 const COLORS = {
     reset: '\x1b[0m',
@@ -21,7 +21,7 @@ const TYPES = {
  * @param {Object} options optional option object
  * @returns {boolean} report written
  */
-function buildReport(data, options = {}) {
+export default function buildReport(data, options = {}) {
     if (!data) {
         console.error('Unable to write report');
         return false;
@@ -60,7 +60,3 @@ function buildReport(data, options = {}) {
 
     return true;
 }
-
-module.exports = {
-    buildReport,
-};

@@ -15,7 +15,11 @@ jobs:
 
         strategy:
             matrix:
+<<<<<<< HEAD
                 node-version: [14.x, 16.x]
+=======
+                node-version: [12.x, 14.x, 16.x]9d (feat(*): use ecmascript modules)
+>>>>>>> ecmascript-modules
 
         steps:
             - uses: actions/checkout@v3

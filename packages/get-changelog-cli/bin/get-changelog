@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
-const program = require('commander');
-const packageJson = require('../package.json');
-const Runner = require('../src/Runner');
+import fs from 'fs';
+import program from 'commander';
+import Runner from '../src/Runner';
+
+const packageJson = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
 
 program
     .version(packageJson.version, '-v, --version')
