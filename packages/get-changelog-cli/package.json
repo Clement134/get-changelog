@@ -21,11 +21,7 @@
         "get-changelog": "./bin/get-changelog"
     },
     "engines": {
-<<<<<<< HEAD
         "node": ">= 14.0.0"
-=======
-        "node": ">= 12.22.0"
->>>>>>> ecmascript-modules
     },
     "author": "Clement134",
     "license": "MIT",
