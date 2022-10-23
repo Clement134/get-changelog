@@ -2,8 +2,8 @@
 import { jest } from '@jest/globals';
 import registryUrl from 'registry-url';
 import got from 'got';
-import GithubAPI from './GithubAPI';
-import ChangelogFinder from './ChangelogFinder';
+import GithubAPI from './GithubAPI.js';
+import ChangelogFinder from './ChangelogFinder.js';
 
 class ErrorHttp extends Error {
     constructor(statusCode) {

@@ -5,8 +5,8 @@ import semver from 'semver';
 import openUrl from 'open';
 import ChangelogFinder from 'get-changelog-lib';
 
-import Cache from './Cache';
-import reporters, { console } from './reporters';
+import Cache from './Cache.js';
+import reporters from './reporters/index.js';
 
 const spinnerConfig = { spinner: 'simpleDots' };
 const VERSION_DATA_EXTRACTOR = /(?:npm:(.+)@)?(.*)/;
@@ -36,7 +36,7 @@ export default class Runner {
      */
     constructor(options) {
         this.options = options || {};
-        this.options.reporter = options.reporter || 'console';
+        this.options.reporter = options.reporter || 'consoleReporter';
     }
 
     /**
@@ -147,7 +147,7 @@ export default class Runner {
 
             spinner.stop();
             // format output
-            const reporter = reporters[this.options.reporter] || console;
+            const reporter = reporters[this.options.reporter] || reporters.consoleReporter;
             reporter.buildReport(data, this.options);
         }
 

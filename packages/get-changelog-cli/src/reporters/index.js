@@ -1,4 +1,4 @@
-import console from './console';
-import consoleJira from './console-jira';
+import console from './console.js';
+import consoleJira from './console-jira.js';
 
-export { console, consoleJira };
+export default { consoleReporter: console, consoleJira };

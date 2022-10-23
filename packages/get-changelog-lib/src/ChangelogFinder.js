@@ -1,12 +1,11 @@
 import url from 'url';
-import fs from 'fs';
 
 import got from 'got';
 import registryUrl from 'registry-url';
-import GithubAPI from './GithubAPI';
+import GithubAPI from './GithubAPI.js';
+import specificChangelogLocations from '../data/changelogs.js';
 
 const DEFAULT_BRANCH = 'master';
-const specificChangelogLocations = JSON.parse(fs.readFileSync('../data/changelogs.json', 'utf8'));
 
 export default class ChangelogFinder {
     /**

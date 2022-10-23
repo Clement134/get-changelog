@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 import fs from 'fs';
-import program from 'commander';
-import Runner from '../src/Runner';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { program } from 'commander';
+import Runner from '../src/Runner.js';
 
-const packageJson = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf8'));
 
 program
     .version(packageJson.version, '-v, --version')

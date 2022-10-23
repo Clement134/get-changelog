@@ -21,7 +21,7 @@ const TYPES = {
  * @param {Object} options optional option object
  * @returns {boolean} report written
  */
-export default function buildReport(data, options = {}) {
+export function buildReport(data, options = {}) {
     if (!data) {
         console.error('Unable to write report');
         return false;
@@ -60,3 +60,5 @@ export default function buildReport(data, options = {}) {
 
     return true;
 }
+
+export default { buildReport };

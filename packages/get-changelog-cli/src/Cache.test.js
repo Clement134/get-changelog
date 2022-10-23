@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import fs from 'fs/promises';
-import Cache from './Cache';
+import Cache from './Cache.js';
 
 test('log warning (no cache file)', async () => {
     const logSpy = jest.spyOn(global.console, 'log');

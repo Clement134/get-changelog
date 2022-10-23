@@ -1,7 +1,6 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
         "es6": true,
         "jest": true
     },
@@ -19,6 +18,8 @@
         "no-await-in-loop": "off",
         "no-console": "off",
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "import/no-unresolved": ["error", { "ignore": ["get-changelog-lib"] }],
+        "import/extensions": ["error", { "js": "always" }]
     }
 }

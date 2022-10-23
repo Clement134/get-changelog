@@ -4,9 +4,9 @@ import ncu from 'npm-check-updates';
 import open from 'open';
 import ChangelogFinder from 'get-changelog-lib';
 
-import Runner from './Runner';
-import Cache from './Cache';
-import buildReport from './reporters/console';
+import Runner from './Runner.js';
+import Cache from './Cache.js';
+import { buildReport } from './reporters/console.js';
 
 jest.mock('ora');
 jest.mock('npm-check-updates');

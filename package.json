@@ -14,7 +14,7 @@
     "scripts": {
         "lint": "eslint .",
         "pretest": "npm run lint",
-        "test": "jest --silent",
+        "test": "NODE_OPTIONS=--experimental-vm-modules jest --silent",
         "prepare": "husky install",
         "pre-commit": "pretty-quick --staged"
     },

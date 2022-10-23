@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import got from 'got';
-import GithubAPI from './GithubAPI';
+import GithubAPI from './GithubAPI.js';
 
 jest.mock('got');
 
