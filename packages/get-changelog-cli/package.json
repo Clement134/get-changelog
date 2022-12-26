@@ -28,7 +28,7 @@
         "cli-table": "^0.3.4",
         "commander": "^9.0.0",
         "get-changelog-lib": "^3.0.0",
-        "npm-check-updates": "^13.1.1",
+        "npm-check-updates": "^16.6.2",
         "open": "^8.0.2",
         "ora": "^5.0.0",
         "semver": "^7.3.2",
